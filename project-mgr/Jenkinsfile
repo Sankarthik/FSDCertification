@@ -1,0 +1,29 @@
+node {
+   stage('Checkout from SCM GIT') {
+     git credentialsId: 'GitHub_PWD', url: 'https://github.com/Sankarthik/FSDTraining'
+     echo 'Git checkout succeeded'
+   }
+   
+   stage('Build Docker Image') {
+      // Build image from Docker File path
+      sh 'docker build -f "./ctsstudy/Dockerfile" -t sankarthik30/task-mgr-boot:3.0 ./ctsstudy/
+   }
+   
+   stage('Pushing Image into Docker Hub') {
+	   	withCredentials([string(credentialsId: 'docker-pwd', variable: 'DockerPwd')]) {
+	    	sh "docker login -u sankarthik30 -p ${DockerPwd}"
+		}
+		
+   		sh 'docker push sankarthik30/task-mgr-boot:3.0'
+   }
+   
+   stage('Run Docker container') {
+   	
+   	  //Remove existing containers
+      sh 'docker ps --format "{{.ID}}" --filter name=task-mgr-springboot-3.0 | sort -u | xargs docker rm -f'
+      sh 'docker ps --format "{{.ID}}" --filter name=mysql-standalone | sort -u | xargs docker rm -f'
+      
+      sh 'docker run -p 3306:3306 --name mysql-standalone -e MYSQL_ROOT_PASSWORD=admin -e MYSQL_DATABASE=cogdb -e MYSQL_USER=admin -e MYSQL_PASSWORD=admin -d mysql:latest'
+      sh 'docker run -p 8080:8080 --name task-mgr-springboot-3.0 --link mysql-standalone:mysql -d task-mgr-springboot-3.0'
+   }
+}

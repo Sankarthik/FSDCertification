@@ -1,0 +1,21 @@
+ .tbody{
+    overflow-y:auto;
+    position: relative; 
+    color: rgb(15, 15, 221);
+  }
+
+thead.thead-light th, .card-header {
+   background:rgb(172, 172, 235) ;
+   font-weight: bold ;
+   color: black;
+ }
+
+ div.filter-class {
+  background:lavender !important;
+ }
+
+ .mr3 {
+   margin-right: auto;
+ }
+
+  

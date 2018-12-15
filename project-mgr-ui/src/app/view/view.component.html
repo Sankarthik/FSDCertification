@@ -1,0 +1,78 @@
+<div class="container">
+  <form>
+    <div class="row">
+      <div class="col-12">
+        <div class="card text-center">
+          <div class="card-header"> View Task</div>
+          <div class="filter-class card-body">
+            <div class="row">
+              <div class="col-md-3  mb-3"><label for="filterByName">Task</label></div>
+              <div class="col-md-3  mb-3"><input type="text" name="task" [(ngModel)]="filterByName" class="form-control"
+                  id="filterByName"></div>
+
+              <div class="col-md-3  mb-3"><label for="filterByParentTask">Parent Task</label></div>
+              <div class="col-md-3  mb-3"><input type="text" (keypress)="numberOnly($event)" name="parentTask" [(ngModel)]="filterByParentTask"
+                  class="form-control" id="filterByParentTask"></div>
+
+              <div class="col-md-3  mb-3"><label for="filterByPriorityFrom">Priority From</label></div>
+              <div class="col-md-3  mb-3"><input type="text" (keypress)="numberOnly($event)" maxlength="2" class="form-control"
+                  name="priorityFrom" [(ngModel)]="filterByPriorityFrom" id="filterByPriorityFrom"></div>
+              
+                  <div class="col-md-3  mb-3"><label for="priorityToFilterId">Priority To</label></div>
+              <div class="col-md-3  mb-3"><input type="text" (keypress)="numberOnly($event)" maxlength="2" class="form-control"
+                  name="priorityTo" [(ngModel)]="filterByPriorityTo" id="filterByPriorityTo"></div>
+              
+                  <div class="col-md-3"><label for="filterByStartDate" i18n="@@label.startDate">Start Date</label></div>
+              <div class="col-md-3"><input type="date" name="startDate" [(ngModel)]="filterByStartDate" class="form-control"
+                  id="filterByStartDate"></div>
+              
+                  <div class="col-md-3"><label for="filterByEndDate" i18n="@@label.endDate">End Date</label></div>
+              <div class="col-md-3"><input type="date" name="endDate" [(ngModel)]="filterByEndDate" class="form-control"
+                  id="filterByEndDate"></div>
+              
+              <button type="reset" class="btn btn-primary mr-3">Reset</button>
+            </div>
+            <br><br/>
+          </div>
+          <div class="card-body row">
+            <table class="table table-hover">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Task</th>
+                  <th scope="col">Parent Task</th>
+                  <th scope="col">Priority</th>
+                  <th scope="col">Start Date</th>
+                  <th scope="col">End Date</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody class="tbody">
+                <tr *ngFor="let t of tasks | TaskFilter : filterByName 
+                                                          : filterByParentTask
+                                                          : filterByPriorityFrom
+                                                          : filterByPriorityTo
+                                                          : filterByStartDate
+                                                          : filterByEndDate">
+
+                  <td>{{t.id}}</td>
+                  <td>{{t.task}}</td>
+                  <td>{{t.parentTask?t.parentTask.id: null}}</td>
+                  <td>{{t.priority}}</td>
+                  <td>{{t.startDate | date:"dd-MM-yyyy"}}</td>
+                  <td>{{t.endDate | date:"dd-MM-yyyy"}}</td>
+                  <td>
+                    <button type="button" class="btn btn-primary mr-3" [disabled] = isTaskExpired(t) (click)="update(t)">Edit</button>
+                    <button type="button" class="btn btn-primary" [disabled] = isTaskExpired(t) *ngIf="isTaskActive(t)" (click)="finishTask(t)">End Task</button>
+                    <button type="button" class="btn btn-primary" [disabled] = isTaskExpired(t) *ngIf="!isTaskActive(t)" (click)="delete(t)">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- </div> -->
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,27 @@
+node {
+   stage('Checkout from SCM GIT') {
+     git credentialsId: 'GitHub_PWD', url: 'https://github.com/Sankarthik/FSDTraining'
+     echo 'Git checkout succeeded'
+   }
+   
+   stage('Build Docker Image') {
+      // Build image from Docker File path
+      sh 'docker build -f "./task-ui/Dockerfile" -t sankarthik30/task-mgr-ui-3.0 ./task-ui/
+   }
+   
+   stage('Pushing Image into Docker Hub') {
+	   	withCredentials([string(credentialsId: 'docker-pwd', variable: 'DockerPwd')]) {
+	    	sh "docker login -u sankarthik30 -p ${DockerPwd}"
+		}
+		
+   		sh 'docker push sankarthik30/task-mgr-ui-3.0'
+   }
+   
+   stage('Run Docker container') {
+   	
+   	  //Remove existing containers
+      sh 'docker ps --format "{{.ID}}" --filter name=task-mgr-ui-1.0 | sort -u | xargs docker rm -f'
+      
+      sh 'docker run --rm -d -p 8085:80/tcp --name task-mgr-ui-3.0 task-mgr-ui-3.0:latest'
+   }
+}

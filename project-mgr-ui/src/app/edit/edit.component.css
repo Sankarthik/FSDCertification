@@ -1,0 +1,32 @@
+.col-sm-2 {
+    margin-left: 10%;
+    background-color: rgb(172, 172, 235);
+    text-align: right;
+    font-weight: bold
+  }
+  
+  .slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    background: #6c6aec;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+  }
+  
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 10px;
+    height: 25px;
+    background: rgb(76, 59, 235);
+    cursor: pointer;
+  }
+
+  .alert {
+    margin-left: 10%;
+    text-align: right;
+    font-weight: bold
+  }

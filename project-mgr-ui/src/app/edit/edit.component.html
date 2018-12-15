@@ -1,0 +1,63 @@
+<div class="container-fluid">
+    <div class="col">
+        <br/>
+    </div>
+  <div class="col">
+      <br/>
+    </div>
+      <form>
+      <div class="col">
+              <div class="form-group row">
+                <label for="inputTask" class="col-sm-2 col-form-label">Task:</label>
+                <div class="col-sm-5">
+                    <input #taskName="ngModel" [(ngModel)]="task.task" class="form-control" name="taskName" type="text" required/>
+                </div>
+                 <!-- <div *ngIf="taskName.errors && (taskName.dirty || taskName.touched)" class="alert alert-danger">
+                        <div [hidden]="!taskName.errors.required">
+                          Task Name is required!
+                 </div> </div> -->
+              </div>
+  
+              <div class="form-group row">
+                  <label for="inputPriority" class="col-sm-2 col-form-label">Priority:</label>
+                  <div class="col-sm-5">
+                      <input #priority="ngModel" [(ngModel)]="task.priority" class="form-control slider" min="0" max="30" step="1"
+                      name="priority" type="range"/> {{task.priority}}
+                   </div>
+              </div>
+  
+              <div class="form-group row" *ngIf="parents?.length > 0">
+                  <label for="inputParentTask" class="col-sm-2 col-form-label">Parent Task:</label>
+                  <div class="col-sm-5">
+                      <select class="form-control" id="parentTask" name="parentTask" [(ngModel)]="parentId">
+                          <option *ngFor="let parent of parents" value="{{parent.id}}">{{parent.task}}</option>
+                        </select>
+                   </div>
+              </div>
+  
+              <div class="form-group row">
+                  <label for="inputStartDate" class="col-sm-2 col-form-label">Start Date:</label>
+                  <div class="col-sm-5">
+                      <input #startDate="ngModel" min="{{task.startDate}}" [(ngModel)]="task.startDate" class="form-control" name="stDate" type="date" required/>
+                   </div>                  
+              </div>
+  
+              <div class="form-group row">
+                  <label for="inputEndDate" class="col-sm-2 col-form-label">End Date:</label>
+                  <div class="col-sm-5">
+                      <input #endDate="ngModel" min="{{today}}" [(ngModel)]="task.endDate" class="form-control" name="etDate" type="date"/>
+                  </div>
+              </div>
+             
+               <!-- Displaying error message Option-->
+            <div class="form-group row">
+                <div *ngIf="!!(errorMsg)" class="alert alert-danger" role="alert"> {{ errorMsg }} </div>
+            </div>
+
+        <div class="col-md-4 text-center"> 
+          <button type="button" class="btn btn-primary mr-3" (click)="onSubmit()">Update</button>
+          <button type="button" class="btn btn-primary mr-3" (click)="onCancel()">Cancel</button>
+        </div>
+      </div>
+    </form>
+</div>
