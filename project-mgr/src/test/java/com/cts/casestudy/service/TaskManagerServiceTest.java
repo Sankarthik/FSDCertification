@@ -49,4 +49,9 @@ public class TaskManagerServiceTest {
     public void deleteTask() {
     	taskService.deleteTask(1);
     }
+    
+    @Test
+    public void endTask() {
+    	taskService.endTask(1);
+    }
 }

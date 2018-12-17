@@ -6,9 +6,9 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @SpringBootApplication
 @EntityScan("com.cts.casestudy.entities")
-public class CtsTaskMgrApplication {
+public class CtsProjectMgrApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CtsTaskMgrApplication.class, args);
+		SpringApplication.run(CtsProjectMgrApplication.class, args);
 	}
 }

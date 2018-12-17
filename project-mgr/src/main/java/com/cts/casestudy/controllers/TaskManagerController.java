@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cts.casestudy.entities.Task;
 import com.cts.casestudy.service.TaskManagerService;
 
-@RestController
 @CrossOrigin
+@RestController
 public class TaskManagerController {
 	
 	@Autowired

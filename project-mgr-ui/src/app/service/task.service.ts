@@ -11,7 +11,7 @@ import { environment } from '../../environments/environment';
 })
 export class TaskService {
   http: HttpClient;
-  taskHttpUrl:string = environment.apiUrl;
+  taskHttpUrl:string = environment.apiUrl + "/tasks/";
 
   constructor(http: HttpClient, private datePipe : DatePipe) {
     this.http = http;
