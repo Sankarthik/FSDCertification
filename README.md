@@ -34,7 +34,7 @@ Git REPO: https://github.com/Sankarthik/FSDTraining
 Frontend Docker HUB URL:  https://hub.docker.com/r/sankarthik30/task-mgr-ui-final:1.0/
 Backend Docker HUB URL:  https://hub.docker.com/r/sankarthik30/task-mgr-springboot-final/
 
-To run the project
+To run the project:
 ---------------------
 
 Frontend - use 'ng serve' and the application will be available in 'http://localhost:4200' (with default port)
