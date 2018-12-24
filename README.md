@@ -1,4 +1,4 @@
-# FSD Task Manager Case Study
+# FSD Project Manager Case Study
 --------------------------------------------
 
 Application is to manage the Task with the below business functionalities.
