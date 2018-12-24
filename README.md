@@ -1,11 +1,11 @@
-# FSD Task Manager Case Study
+# FSD Project Manager Case Study
 --------------------------------------------
 
-Application is to manage the Task with the below business functionalities.
+Application is to manage the Project and Tasks with the below business functionalities...
 
 User can view all the existing tasks and also filter the tasks in Frontend. (Backend JPA Filter is defined and not implemented on purpose)
 
-User can add a new task with mandatory fields of Task name and Start date.
+User can add a new task with mandatory fields of Task name and Start date..
 
 User can edit an existing task
 
@@ -34,7 +34,7 @@ Git REPO: https://github.com/Sankarthik/FSDTraining
 Frontend Docker HUB URL:  https://hub.docker.com/r/sankarthik30/task-mgr-ui-final:1.0/
 Backend Docker HUB URL:  https://hub.docker.com/r/sankarthik30/task-mgr-springboot-final/
 
-To run the project
+To run the project:
 ---------------------
 
 Frontend - use 'ng serve' and the application will be available in 'http://localhost:4200' (with default port)
