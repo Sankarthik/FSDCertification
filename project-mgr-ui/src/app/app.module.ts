@@ -14,6 +14,8 @@ import {HttpClientModule, HttpClient} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import {TaskFilter} from './pipes/task-filter.pipe';
 import { DatePipe } from '@angular/common';
+import { UserComponent } from './user/user.component';
+import { UserService } from './service/user.service';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,8 @@ import { DatePipe } from '@angular/common';
     ViewComponent,
     AddComponent,
     EditComponent,
-    TaskFilter
+    TaskFilter,
+    UserComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +41,7 @@ import { DatePipe } from '@angular/common';
     BrowserAnimationsModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [TaskService, DatePipe],
+  providers: [TaskService, UserService, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {

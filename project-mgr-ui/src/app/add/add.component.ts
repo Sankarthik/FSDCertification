@@ -2,7 +2,7 @@ import { Component, OnInit, Output, NgModule } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TaskService} from '../service/task.service';
 import {Task} from '../model/task';
-import {ParentTask} from "../model/parentTask";
+import {ParentTask} from '../model/parentTask';
 import * as moment from 'moment';
 import { isNullOrUndefined } from 'util';
 
@@ -14,7 +14,7 @@ import { isNullOrUndefined } from 'util';
 export class AddComponent implements OnInit {
   @Output() tasks;
   task: Task;
-  parents= [];
+  parents = [];
   parentId: number;
   errorMsg: any;
 
@@ -32,12 +32,12 @@ export class AddComponent implements OnInit {
   }
 
   onSubmit() {
-    if(!this.validateForm()) {
+    if (!this.validateForm()) {
       return false;
     }
 
     if (this.parentId != null) {
-      let parent = new ParentTask();
+      const parent = new ParentTask();
       parent.id = this.parentId;
       this.task.parentTask = parent;
     }
@@ -54,27 +54,27 @@ export class AddComponent implements OnInit {
   }
 
   public validateForm() {
-    let t = new Date();
-    let today = new Date(t.getFullYear(), t.getMonth(), t.getDate() );
-    let endDate = new Date(this.task.endDate);
-    let startDate = new Date(this.task.startDate);
+    const t = new Date();
+    const today = new Date(t.getFullYear(), t.getMonth(), t.getDate() );
+    const endDate = new Date(this.task.endDate);
+    const startDate = new Date(this.task.startDate);
     let formattedDate;
-    if(isNullOrUndefined(this.task.task)) {
+    if (isNullOrUndefined(this.task.task) || this.task.task.trim().length < 1) {
       this.errorMsg = `Task name is mandatory`;
       return false;
     }
-    if(isNullOrUndefined(this.task.startDate)) {
+    if (isNullOrUndefined(this.task.startDate) || (!this.task.startDate)) {
       this.errorMsg = `Start Date is mandatory`;
       return false;
     }
 
     if (endDate < today || startDate < today) {
-      formattedDate = this.formatDate(today);    //moment(today).format('DD-MM-YYYY');
+      formattedDate = this.formatDate(today);    // moment(today).format('DD-MM-YYYY');
       this.errorMsg = `Start or End Date should be ${formattedDate} or in the future`;
       return false;
     }
-    if(endDate < startDate) {
-      formattedDate = this.formatDate(startDate); 
+    if (endDate < startDate) {
+      formattedDate = this.formatDate(startDate);
       this.errorMsg = `End Date should be greater than start date: ${formattedDate}`;
       return false;
     }

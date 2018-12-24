@@ -1,0 +1,79 @@
+<div class="container-fluid">
+  <div class="col">
+    <br/>
+  </div>
+    <form>    
+    <div class="col-12">
+        <div class="card text-center">
+            <div><br/></div>
+
+            <div class="form-group row">
+              <label for="inputFirstName" class="col-sm-2 col-form-label">FirstName:</label>
+              <div class="col-sm-5">
+                  <input #firstName="ngModel" [(ngModel)]="user.firstName" class="form-control" name="firstName" type="text" placeholder="First Name" required/>
+               </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="inputLastName" class="col-sm-2 col-form-label">LastName:</label>
+              <div class="col-sm-5">
+                  <input #lastName="ngModel" [(ngModel)]="user.lastName" class="form-control" name="lastName" type="text" placeholder="Last Name" required/>
+               </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="inputEmpId" class="col-sm-2 col-form-label">Employee Id:</label>
+                <div class="col-sm-5">
+                    <input #empId="ngModel" [(ngModel)]="user.employeeId" class="form-control" (keypress)="numberOnly($event)" minlength="1" maxlength="9"
+                    name="empId" type="text" required/>
+                 </div>
+            </div>
+
+            
+            <!-- Displaying error message Option-->
+            <div class="form-group row">
+                <div *ngIf="!!(errorMsg)" class="alert alert-danger" role="alert"> {{ errorMsg }} </div>
+            </div>
+            
+      <div class="col-md-4 text-center"> 
+      <button type="button" class="btn btn-primary mr-3" (click)="onSubmit()">Add</button>
+      <button type="reset" class="btn btn-primary mr-3" (click)="reset()">Reset</button>
+      </div>
+
+      <div class="col">
+          <br/>
+        </div>
+
+      <div class="card-body row text-left">
+          <table class="table table-hover">
+            <tbody class="tbody">
+              <tr *ngFor="let u of users">
+               <td>
+                 <table class="inner-table">
+                      <tr>
+                           <td><b>Emp ID:</b> {{u.employeeId}}</td>
+                      </tr>
+                      <tr>
+                          <td><b>First Name:</b> {{u.firstName}}</td>
+                     </tr>
+                      <tr>
+                        <td><b>Last Name:</b> {{u.lastName}}</td>
+                      </tr>
+                 </table>
+                   
+              </td>
+                <td>
+                  <button type="button" class="btn btn-primary mr-3" (click)="update(t)">Edit</button>
+                  <button type="button" class="btn btn-primary" (click)="delete(t)">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+         </div>
+
+    </div>
+
+</div>
+    
+  </form>
+</div>

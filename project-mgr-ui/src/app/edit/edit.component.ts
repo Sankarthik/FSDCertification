@@ -1,9 +1,7 @@
 import {Component, OnInit, Output, Input} from '@angular/core';
 import {Task} from '../model/task';
 import {ActivatedRoute, Router} from '@angular/router';
-//import {log} from 'util';
 import {TaskService} from '../service/task.service';
-import {DatePipe} from "@angular/common";
 import * as moment from 'moment';
 import { isNullOrUndefined } from 'util';
 import { ParentTask } from '../model/parentTask';
@@ -30,11 +28,11 @@ export class EditComponent implements OnInit {
    }
 
   ngOnInit() {
-    let taskId = this.route.snapshot.paramMap.get('id');
+    const taskId = this.route.snapshot.paramMap.get('id');
     this.taskService.getTask(taskId).then(value => {
       this.task = value;
       this.tempStartDt = this.task.startDate;
-      if(!isNullOrUndefined(this.task.parentTask)) {
+      if (!isNullOrUndefined(this.task.parentTask)) {
         this.parentId = this.task.parentTask.id;
       }
     });
@@ -47,11 +45,11 @@ export class EditComponent implements OnInit {
   }
 
   onSubmit() {
-    if(!this.validateForm()) {
+    if (!this.validateForm()) {
       return false;
     }
     if (this.parentId != null) {
-      let parent = new ParentTask();
+      const parent = new ParentTask();
       parent.id = this.parentId;
       this.task.parentTask = parent;
     }
@@ -62,25 +60,25 @@ export class EditComponent implements OnInit {
       );
   }
 
-  onCancel() {   
-   this.router.navigate(['./view']);    
+  onCancel() {
+   this.router.navigate(['./view']);
   }
 
   public validateForm() {
-    let t = new Date();
-    let today = new Date(t.getFullYear(), t.getMonth(), t.getDate() );
-    let tmpEndDate = this.task.endDate == null ? undefined : this.task.endDate;
-    let endDate = new Date(tmpEndDate);
-    let startDate = new Date(this.task.startDate);
-    let tmpStartDt = new Date(this.tempStartDt);
-    let taskName = this.task.task;
+    const t = new Date();
+    const today = new Date(t.getFullYear(), t.getMonth(), t.getDate() );
+    const tmpEndDate = this.task.endDate == null ? undefined : this.task.endDate;
+    const endDate = new Date(tmpEndDate);
+    const startDate = new Date(this.task.startDate);
+    const tmpStartDt = new Date(this.tempStartDt);
+    const taskName = this.task.task;
     let formattedDate;
 
-    if(isNullOrUndefined(taskName) || taskName.trim().length < 1) {
+    if (isNullOrUndefined(taskName) || taskName.trim().length < 1) {
       this.errorMsg = `Task name is mandatory`;
       return false;
     }
-    if(isNullOrUndefined(this.task.startDate) || (!this.task.startDate)) {
+    if (isNullOrUndefined(this.task.startDate) || (!this.task.startDate)) {
       this.errorMsg = `Start Date is mandatory`;
       return false;
     }
@@ -96,8 +94,8 @@ export class EditComponent implements OnInit {
       this.errorMsg = `Start Date should be ${formattedDate} or in the future`;
       return false;
     }
-    if(endDate < startDate) {
-      formattedDate = this.formatDate(startDate); 
+    if (endDate < startDate) {
+      formattedDate = this.formatDate(startDate);
       this.errorMsg = `End Date should be greater than start date: ${formattedDate}`;
       return false;
     }

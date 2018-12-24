@@ -74,3 +74,13 @@ Jenkins Steps inside Docker
 2) Start docker run -p 8088:8080 jenkinsci/blueocean
 
 
+To run docker inside Jenkins
+----------------------------
+docker run -u root -p 8088:8080 -v jenkins-data:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock -v "/C/Users/GiridharanS":/home jenkinsci/blueocean
+
+login into container
+--------------------
+docker exec -it <mycontainer> bash
+
+
+

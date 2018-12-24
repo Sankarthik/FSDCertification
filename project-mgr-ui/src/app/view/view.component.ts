@@ -71,6 +71,6 @@ export class ViewComponent implements OnInit {
   }
 
   isTaskExpired(t: Task): boolean {
-    return moment(t.endDate).isBefore(moment())
+    return moment(t.endDate).isBefore(moment());
   }
 }

@@ -1,6 +1,9 @@
 node {
    stage('Checkout from SCM GIT') {
-     git credentialsId: 'GitHub_PWD', url: 'https://github.com/Sankarthik/FSDTraining'
+     checkout([$class: 'GitSCM', branches: [[name: '*/master']], 
+              doGenerateSubmoduleConfigurations: false, extensions: [], 
+              submoduleCfg: [], 
+              userRemoteConfigs: [[url: 'https://github.com/Sankarthik/FSDCertification.git']]])
      echo 'Git checkout succeeded'
    }
    
