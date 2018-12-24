@@ -1,7 +1,7 @@
 # FSD Project Manager Case Study
 --------------------------------------------
 
-Application is to manage the Project and Task with the below business functionalities.
+Application is to manage the Project and Tasks with the below business functionalities.
 
 User can view all the existing tasks and also filter the tasks in Frontend. (Backend JPA Filter is defined and not implemented on purpose)
 
