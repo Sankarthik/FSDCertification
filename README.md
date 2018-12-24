@@ -5,7 +5,7 @@ Application is to manage the Project and Tasks with the below business functiona
 
 User can view all the existing tasks and also filter the tasks in Frontend. (Backend JPA Filter is defined and not implemented on purpose)
 
-User can add a new task with mandatory fields of Task name and Start date.
+User can add a new task with mandatory fields of Task name and Start date..
 
 User can edit an existing task
 
