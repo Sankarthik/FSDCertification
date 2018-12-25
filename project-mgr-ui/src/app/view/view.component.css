@@ -1,7 +1,10 @@
- .tbody{
-    overflow-y:auto;
+ .san{
+    overflow:auto;
     position: relative; 
+    resize: both;
     color: rgb(15, 15, 221);
+    height: 300px;
+    display: inline-block;
   }
 
 thead.thead-light th, .card-header {

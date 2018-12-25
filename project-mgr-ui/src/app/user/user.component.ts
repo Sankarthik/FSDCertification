@@ -84,7 +84,6 @@ export class UserComponent implements OnInit {
     const firstName = this.user.firstName;
     const lastName = this.user.lastName;
     const empId = this.user.employeeId;
-    console.log(empId);
 
     if (isNullOrUndefined(firstName) || firstName.trim().length < 1) {
       this.errorMsg = `FirstName is mandatory`;

@@ -18,6 +18,36 @@ thead.thead-light th, .card-header {
   color: black;
 }
 
+.col-sm-1 {
+    margin: 0 auto;
+    background-color: rgb(172, 172, 235);
+    text-align: right;
+    font-weight: bold
+  }
+
+.date-label {   
+    margin: 0 auto;
+    text-align: right;
+    font-weight: lighter;
+    font-size: smaller;
+    box-align: inherit;
+}
+
+/* .form-check-input {
+    margin-right: auto;
+} */
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    background: #6c6aec;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+  }
+
  div.filter-class {
   background:lavender !important;
  }
@@ -26,19 +56,7 @@ thead.thead-light th, .card-header {
    margin-right: auto;
    text-align: inherit;
  }
-
- .ml3 {
-  margin-left: auto;
-  margin-right: auto;
-  text-align: inherit;
-}
-
- .col-sm-2 {
-  margin-left: 10%;
-  background-color: rgb(172, 172, 235);
-  text-align: right;
-  font-weight: bold
-}
+ 
 .col-filter {
   margin-left: 5%;
   text-align: left;
@@ -61,10 +79,3 @@ div.col-12 {
   margin: auto;
   border: 3px solid rgb(172, 172, 235);
 }
-
-/* div.san {
-  padding: 10px; 
-  width: 300px;
-  resize: both;
-  overflow: auto;
-} */

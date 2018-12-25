@@ -1,7 +1,10 @@
 package com.cts.casestudy.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Size;
@@ -11,12 +14,18 @@ import javax.validation.constraints.Size;
 public class User {
 
 	@Id
-	@Digits(integer=9, fraction=0)
+	@Digits(integer = 9, fraction = 0)
 	private Integer employeeId;
+	
 	@Size(max = 100)
 	private String firstName;
+	
 	@Size(max = 100)
 	private String lastName;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "PROJECT_ID")
+	private Project project;
 
 	public Integer getEmployeeId() {
 		return employeeId;
@@ -42,13 +51,22 @@ public class User {
 		this.lastName = lastName;
 	}
 
-	public User(@Digits(integer=9, fraction=0) Integer employeeId, @Size(max = 100) String firstName, @Size(max = 100) String lastName) {
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
+
+	public User(@Digits(integer = 9, fraction = 0) Integer employeeId, @Size(max = 100) String firstName,
+			@Size(max = 100) String lastName) {
 		super();
 		this.employeeId = employeeId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
-	
+
 	public User() {
 		super();
 	}

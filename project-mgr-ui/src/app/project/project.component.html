@@ -1,0 +1,69 @@
+<div class="container-fluid">
+    <div class="col">
+      <br/>
+    </div>
+      <form>    
+      <div class="col-12">
+          <div class="card text-center">
+              <div><br/></div>
+  
+              <div class="form-group row">
+                <label for="inputProject" class="col-sm-2 col-form-label">Project:</label>
+                <div class="col-sm-5">
+                    <input #projectName="ngModel" [(ngModel)]="project.project" class="form-control" name="projectName" type="text" placeholder="Project Name" required/>
+                 </div>
+              </div>
+
+              <div class="form-group row">
+                    <div class="form-check date-label">
+                            <input type="checkbox" class="form-check-input" 
+                                   (ng-model)="isDateChecked" id="dateChecked" (change)="changeChkBox($event)">
+                            <label class="form-check-label" for="isDateChkLabel">Set Start Date and End Date</label>
+                    </div>
+                    <label for="inputStartDate" class="col-sm-1 col-form-label">Start Date:</label>
+                    <div>
+                        <input #startDate="ngModel" [(ngModel)]="project.startDate" 
+                        [disabled]=!isDateChecked class="form-control" name="stDate" type="date"/>
+                    </div>
+                    <label for="inputEndDate" class="col-sm-1 col-form-label">End Date:</label>
+                    <div>
+                        <input #endDate="ngModel" [(ngModel)]="project.endDate" 
+                        [disabled]=!isDateChecked class="form-control" name="etDate" type="date"/>
+                    </div>
+              </div>
+              
+              <!-- <input type="checkbox" name="dateValue" [ngModel]="isDateChecked" id="dateChecked"> -->
+              <div>
+                  <br/>
+              </div>
+
+              <div class="form-group row">
+                  <label for="inputPriority" class="col-sm-2 col-form-label">Priority:</label>
+                  <div class="col-sm-5">
+                      <input #priority="ngModel" [(ngModel)]="project.priority" class="form-control slider" min="0" max="30" step="1"
+                      name="priority" type="range" /> {{project.priority}}
+                   </div>
+              </div>
+  
+             
+  
+              
+              <!-- Displaying error message Option-->
+              <div class="form-group row">
+                  <div *ngIf="!!(errorMsg)" class="alert alert-danger" role="alert"> {{ errorMsg }} </div>
+              </div>
+              
+              <div class="col-md-4 text-center"> 
+                <button type="button" class="btn btn-primary mr-3" *ngIf="!isUpdate" (click)="onSubmit()">Add</button>
+                <button type="button" class="btn btn-primary mr-3" *ngIf="isUpdate" (click)="onUpdate()">Update</button>
+                <button type="reset" class="btn btn-primary mr-3" (click)="reset()">Reset</button>
+              </div>
+          </div></div></form>
+  
+        <div class="row">
+            <br/><br/>
+        </div>
+  
+
+  </div>
+  

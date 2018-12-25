@@ -17,6 +17,8 @@ import { DatePipe } from '@angular/common';
 import { UserComponent } from './user/user.component';
 import { UserService } from './service/user.service';
 import { UserFilterPipe } from './pipes/user-filter.pipe';
+import { ProjectComponent } from './project/project.component';
+import { ProjectService } from './service/project.service';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,8 @@ import { UserFilterPipe } from './pipes/user-filter.pipe';
     EditComponent,
     TaskFilter,
     UserComponent,
-    UserFilterPipe
+    UserFilterPipe,
+    ProjectComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +46,7 @@ import { UserFilterPipe } from './pipes/user-filter.pipe';
     BrowserAnimationsModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [TaskService, UserService, DatePipe],
+  providers: [TaskService, UserService, ProjectService, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {

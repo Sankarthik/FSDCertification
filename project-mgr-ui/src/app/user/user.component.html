@@ -57,24 +57,15 @@
                   <br/><br/>
               </div>
       </div>
-          <div class="row san"> 
+          <div class="san col-md-5"> 
               <div class="col col-filter"><label for="userFilter">Sort:</label></div>
-              <!-- <div class="row"> -->
               <button type="button" class="btn btn-primary btn-sm mr-3" (click)="filterFirstName(searchFilter)">FirstName</button>
-              <!-- </div> -->
-              <!-- <div class="row"> -->
               <button type="button" class="btn btn-primary btn-sm mr-3" (click)="filterLastName(searchFilter)">LastName</button>
-              <!-- </div> -->
-              <!-- <div class="row"> -->
               <button type="button" class="btn btn-primary btn-sm ml-3" (click)="filterEmpId(searchFilter)">Id</button>
-              <!-- </div> -->
-              <!-- <div class="row"> -->
               <button type="reset" class="btn btn-primary btn-sm ml-3" (click)="resetFilter()">Reset</button>
-              <!-- </div> -->
           </div>
-      <!-- </div> -->
 
-          <table class="table table-hover">
+          <table class="table table-hover align-san">
             <tbody class="tbody">
               <tr *ngFor="let u of filteredUsers">
                <td>
@@ -99,10 +90,4 @@
             </tbody>
           </table>
          </div>
-
-    <!-- </div>
-
-</div>
-    
-  </form> -->
 </div>
