@@ -16,6 +16,7 @@ import {TaskFilter} from './pipes/task-filter.pipe';
 import { DatePipe } from '@angular/common';
 import { UserComponent } from './user/user.component';
 import { UserService } from './service/user.service';
+import { UserFilterPipe } from './pipes/user-filter.pipe';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { UserService } from './service/user.service';
     AddComponent,
     EditComponent,
     TaskFilter,
-    UserComponent
+    UserComponent,
+    UserFilterPipe
   ],
   imports: [
     BrowserModule,

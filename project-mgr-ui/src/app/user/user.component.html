@@ -35,20 +35,48 @@
                 <div *ngIf="!!(errorMsg)" class="alert alert-danger" role="alert"> {{ errorMsg }} </div>
             </div>
             
-      <div class="col-md-4 text-center"> 
-      <button type="button" class="btn btn-primary mr-3" *ngIf="!isUpdate" (click)="onSubmit()">Add</button>
-      <button type="button" class="btn btn-primary mr-3" *ngIf="isUpdate" (click)="onUpdate()">Update</button>
-      <button type="reset" class="btn btn-primary mr-3" (click)="reset()">Reset</button>
+            <div class="col-md-4 text-center"> 
+              <button type="button" class="btn btn-primary mr-3" *ngIf="!isUpdate" (click)="onSubmit()">Add</button>
+              <button type="button" class="btn btn-primary mr-3" *ngIf="isUpdate" (click)="onUpdate()">Update</button>
+              <button type="reset" class="btn btn-primary mr-3" (click)="reset()">Reset</button>
+            </div>
+        </div></div></form>
+
+      <div class="row">
+          <br/><br/>
       </div>
 
-      <div class="col">
-          <br/>
-        </div>
+      <!-- List Of Users-->
+      <div class="card-body row text-left col-12">
+         <!-- Filter Section-->
+      <div class="row">
+          <div class="col-filter"><label for="userFilter">Search</label></div>
+          <div class="col-sm-5"><input type="text" size = "40" [(ngModel)]="searchFilter" name="searchFilter" class="form-control"
+              id="searchFilter"></div>
+              <div class="col">
+                  <br/><br/>
+              </div>
+      </div>
+          <div class="row san"> 
+              <div class="col col-filter"><label for="userFilter">Sort:</label></div>
+              <!-- <div class="row"> -->
+              <button type="button" class="btn btn-primary btn-sm mr-3" (click)="filterFirstName(searchFilter)">FirstName</button>
+              <!-- </div> -->
+              <!-- <div class="row"> -->
+              <button type="button" class="btn btn-primary btn-sm mr-3" (click)="filterLastName(searchFilter)">LastName</button>
+              <!-- </div> -->
+              <!-- <div class="row"> -->
+              <button type="button" class="btn btn-primary btn-sm ml-3" (click)="filterEmpId(searchFilter)">Id</button>
+              <!-- </div> -->
+              <!-- <div class="row"> -->
+              <button type="reset" class="btn btn-primary btn-sm ml-3" (click)="resetFilter()">Reset</button>
+              <!-- </div> -->
+          </div>
+      <!-- </div> -->
 
-      <div class="card-body row text-left">
           <table class="table table-hover">
             <tbody class="tbody">
-              <tr *ngFor="let u of users">
+              <tr *ngFor="let u of filteredUsers">
                <td>
                  <table class="inner-table">
                       <tr>
@@ -72,9 +100,9 @@
           </table>
          </div>
 
-    </div>
+    <!-- </div>
 
 </div>
     
-  </form>
+  </form> -->
 </div>

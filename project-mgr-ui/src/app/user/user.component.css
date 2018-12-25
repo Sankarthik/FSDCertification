@@ -22,12 +22,24 @@ thead.thead-light th, .card-header {
 
  .mr3 {
    margin-right: auto;
+   text-align: inherit;
  }
+
+ .ml3 {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: inherit;
+}
 
  .col-sm-2 {
   margin-left: 10%;
   background-color: rgb(172, 172, 235);
   text-align: right;
+  font-weight: bold
+}
+.col-filter {
+  margin-left: 5%;
+  text-align: left;
   font-weight: bold
 }
 
@@ -46,4 +58,11 @@ div.col-12 {
   width:75%;
   margin: auto;
   border: 3px solid rgb(172, 172, 235);
+}
+
+div.san {
+  padding: 10px; 
+  width: 300px;
+  resize: both;
+  overflow: auto;
 }

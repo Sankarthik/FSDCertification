@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../service/user.service';
 import { User } from '../model/user';
 import { isNullOrUndefined } from 'util';
@@ -12,29 +11,24 @@ import { isNullOrUndefined } from 'util';
 export class UserComponent implements OnInit {
   user: User;
   users: User[];
+  filteredUsers: User[];
   errorMsg: any;
   isUpdate: boolean;
+  searchFilter: string;
 
-  constructor(private route: ActivatedRoute,
-              private router: Router,
-              private userService: UserService) {
+  constructor(private userService: UserService) {
       this.user = new User();
   }
 
   ngOnInit() {
-    // const empId = this.route.snapshot.paramMap.get('id');
-    // this.taskService.getTask(taskId).then(value => {
-    //   this.task = value;
-    //   this.tempStartDt = this.task.startDate;
-    //   if (!isNullOrUndefined(this.task.parentTask)) {
-    //     this.parentId = this.task.parentTask.id;
-    //   }
-    // });
     this.getUsers();
   }
 
   getUsers(): void {
-    this.userService.getAllUsers().then(value => this.users = value);
+    this.userService.getAllUsers().then(value => {
+      this.users = value;
+      this.filteredUsers = value;
+    });
   }
 
   update(u: User ): void {
@@ -42,7 +36,6 @@ export class UserComponent implements OnInit {
     this.user.employeeId = u.employeeId;
     this.user.firstName = u.firstName;
     this.user.lastName = u.lastName;
-    // this.router.navigate(['/update' , u.employeeId]);
   }
 
   delete(u: User): void {
@@ -121,4 +114,25 @@ export class UserComponent implements OnInit {
     return true;
   }
 
+  filterFirstName(filterByFirstName: string) {
+    this.filteredUsers = this.users.filter(user =>
+      user.firstName.toUpperCase().startsWith(filterByFirstName.toUpperCase()));
+  }
+
+  filterLastName(filterByLastName: string) {
+    this.filteredUsers = this.users.filter(user =>
+      user.lastName.toUpperCase().startsWith(filterByLastName.toUpperCase()));
+  }
+
+  filterEmpId(filterByEmpId: string) {
+    this.filteredUsers = this.users.filter(user => {
+        if (user.employeeId.toString().match(filterByEmpId)) {
+          return user;
+        }
+    });
+  }
+
+  resetFilter() {
+    this.getUsers();
+  }
 }
