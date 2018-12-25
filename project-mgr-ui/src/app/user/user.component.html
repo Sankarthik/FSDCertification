@@ -24,7 +24,7 @@
             <div class="form-group row">
                 <label for="inputEmpId" class="col-sm-2 col-form-label">Employee Id:</label>
                 <div class="col-sm-5">
-                    <input #empId="ngModel" [(ngModel)]="user.employeeId" class="form-control" (keypress)="numberOnly($event)" minlength="1" maxlength="9"
+                    <input #empId="ngModel" [(ngModel)]="user.employeeId" [disabled] = isUpdate class="form-control" (keypress)="numberOnly($event)" minlength="1" maxlength="9"
                     name="empId" type="text" required/>
                  </div>
             </div>
@@ -36,7 +36,8 @@
             </div>
             
       <div class="col-md-4 text-center"> 
-      <button type="button" class="btn btn-primary mr-3" (click)="onSubmit()">Add</button>
+      <button type="button" class="btn btn-primary mr-3" *ngIf="!isUpdate" (click)="onSubmit()">Add</button>
+      <button type="button" class="btn btn-primary mr-3" *ngIf="isUpdate" (click)="onUpdate()">Update</button>
       <button type="reset" class="btn btn-primary mr-3" (click)="reset()">Reset</button>
       </div>
 
@@ -63,8 +64,8 @@
                    
               </td>
                 <td>
-                  <button type="button" class="btn btn-primary mr-3" (click)="update(t)">Edit</button>
-                  <button type="button" class="btn btn-primary" (click)="delete(t)">Delete</button>
+                  <button type="button" class="btn btn-primary mr-3" (click)="update(u)">Edit</button>
+                  <button type="button" class="btn btn-primary" (click)="delete(u)">Delete</button>
                 </td>
               </tr>
             </tbody>

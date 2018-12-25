@@ -13,6 +13,7 @@ export class UserComponent implements OnInit {
   user: User;
   users: User[];
   errorMsg: any;
+  isUpdate: boolean;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -21,6 +22,14 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit() {
+    // const empId = this.route.snapshot.paramMap.get('id');
+    // this.taskService.getTask(taskId).then(value => {
+    //   this.task = value;
+    //   this.tempStartDt = this.task.startDate;
+    //   if (!isNullOrUndefined(this.task.parentTask)) {
+    //     this.parentId = this.task.parentTask.id;
+    //   }
+    // });
     this.getUsers();
   }
 
@@ -28,18 +37,54 @@ export class UserComponent implements OnInit {
     this.userService.getAllUsers().then(value => this.users = value);
   }
 
+  update(u: User ): void {
+    this.isUpdate = true;
+    this.user.employeeId = u.employeeId;
+    this.user.firstName = u.firstName;
+    this.user.lastName = u.lastName;
+    // this.router.navigate(['/update' , u.employeeId]);
+  }
+
+  delete(u: User): void {
+    this.userService.deleteUser(u.employeeId)
+      .then(
+        value => {
+          this.getUsers();
+        }
+      );
+  }
+
   onSubmit() {
     if (!this.validateForm()) {
       return false;
     }
-
     this.errorMsg = '';
     this.userService.addUser(this.user).then(
       value => {
-        // this.router.navigate(['./view']);
+        this.getUsers();
+        this.emptyFields();
+      }
+    );
+  }
+
+  onUpdate() {
+    if (!this.validateForm()) {
+      return false;
+    }
+    this.errorMsg = '';
+    this.userService.updateUser(this.user).then(
+      value => {
         this.getUsers();
       }
     );
+    this.emptyFields();
+    this.isUpdate = false;
+  }
+
+  emptyFields() {
+    this.user.employeeId = undefined;
+    this.user.firstName = '';
+    this.user.lastName = '';
   }
 
   public validateForm() {
@@ -56,7 +101,7 @@ export class UserComponent implements OnInit {
       this.errorMsg = `LastName is mandatory`;
       return false;
     }
-    if (isNullOrUndefined(this.user.employeeId)) {
+    if (isNullOrUndefined(empId) || !empId) {
       this.errorMsg = `Employee Id is mandatory`;
       return false;
     }

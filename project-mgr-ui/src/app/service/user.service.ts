@@ -18,7 +18,15 @@ export class UserService {
     return this.http.get<User>(this.userHttpUrl).toPromise().then(value => value);
   }
 
-  addUser(t: User): Promise<any> {
-    return this.http.post(this.userHttpUrl, t).toPromise().then(value => value);
+  addUser(u: User): Promise<any> {
+    return this.http.post(this.userHttpUrl, u).toPromise().then(value => value);
+  }
+
+  updateUser(u: User): Promise<any> {
+    return this.http.put(this.userHttpUrl, u).toPromise().then(value => value);
+  }
+
+  deleteUser(id: number): Promise<any> {
+    return this.http.delete(this.userHttpUrl + '' + id).toPromise().then(value => value);
   }
 }

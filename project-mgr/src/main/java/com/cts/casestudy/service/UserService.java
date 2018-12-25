@@ -1,7 +1,5 @@
 package com.cts.casestudy.service;
 
-import static java.util.Optional.ofNullable;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +27,6 @@ public class UserService {
 	public void addUser(User user) {
 		if (user != null) {
 			Optional<User> optUser = userRepo.findById(user.getEmployeeId());
-			//ofNullable(optUser).orElseThrow(() -> new RuntimeException("Employee Id already exists"));
 			if(optUser.isPresent()) {
 				throw new RuntimeException("Employee Id already exists");
 			}

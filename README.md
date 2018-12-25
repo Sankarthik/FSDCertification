@@ -71,6 +71,7 @@ From the Dockerfile location in docker terminal ->
 Jenkins Steps inside Docker
 ---------------------------
 1) Add .gitconfig file to add sslVerify = false in Jenkins_Home dir inside Docker container.
+2) If it doesnot work -> execute "git config --global http.sslverify false" in Jenkins_Home dir
 2) Start docker run -p 8088:8080 jenkinsci/blueocean
 
 
