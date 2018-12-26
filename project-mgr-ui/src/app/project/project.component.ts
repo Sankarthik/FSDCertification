@@ -4,6 +4,8 @@ import { ProjectService } from '../service/project.service';
 import { isNullOrUndefined } from 'util';
 import * as moment from 'moment';
 import { DatePipe } from '@angular/common';
+import { UserService } from '../service/user.service';
+import { User } from '../model/user';
 
 @Component({
   selector: 'app-project',
@@ -14,12 +16,16 @@ export class ProjectComponent implements OnInit {
   project: Project;
   projects: Project[];
   filteredProjects: Project[];
+  users: User[];
+  userName: string;
+  userId: number;
   errorMsg: any;
   isUpdate: boolean;
   searchFilter: string;
   isDateChecked: boolean;
 
   constructor(private projectService: ProjectService,
+              private userService: UserService,
               private datePipe: DatePipe) {
     this.project = new Project();
     this.project.priority = 0;
@@ -82,6 +88,10 @@ export class ProjectComponent implements OnInit {
     this.isUpdate = false;
   }
 
+  loadUsers() {
+    this.userService.getAllUsers().then(value => this.users = value);
+  }
+
   emptyFields() {
     this.project.project = '';
     this.project.startDate = undefined;
@@ -128,6 +138,15 @@ export class ProjectComponent implements OnInit {
     return moment(date).format('DD-MM-YYYY');
   }
 
+  onUserSelected() {
+    this.users = this.users.filter(user => {
+      if (user.employeeId.toString().match(this.userId.toString())) {
+        this.userName = user.firstName + '-' + user.lastName;
+      }
+  });
+    this.project.managerId = this.userId;
+  }
+
   changeChkBox(event) {
     if (event.target.checked) {
       this.isDateChecked = true;
@@ -166,6 +185,10 @@ export class ProjectComponent implements OnInit {
     // this.filteredProjects = this.projects.sort ((a: any, b: any) =>
     //   new Date(b.priority).getTime() - new Date(a.priority).getTime()
     // );
+  }
+
+  isProjectExpired(p: Project): boolean {
+    return moment(p.endDate).isBefore(moment());
   }
 
   resetFilter() {
