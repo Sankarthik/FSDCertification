@@ -143,4 +143,32 @@ export class ProjectComponent implements OnInit {
       this.project.endDate = undefined;
     }
   }
+  // Sorting in ascending order by Start Date
+  sortByStartDate() {
+    this.filteredProjects = this.projects.sort ((a: any, b: any) =>
+      new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+    );
+  }
+   // Sorting in ascending order by End Date
+   sortByEndDate() {
+    this.filteredProjects = this.projects.sort ((a: any, b: any) =>
+      new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
+    );
+  }
+  // Sorting in descending order by Prority
+  sortByPriority() {
+    this.filteredProjects = this.projects.sort ((a: any, b: any) =>
+      new Date(b.priority).getTime() - new Date(a.priority).getTime()
+    );
+  }
+  // Sorting in descending order by Completed
+  sortByCompleted() {
+    // this.filteredProjects = this.projects.sort ((a: any, b: any) =>
+    //   new Date(b.priority).getTime() - new Date(a.priority).getTime()
+    // );
+  }
+
+  resetFilter() {
+    this.getProjects();
+  }
 }
