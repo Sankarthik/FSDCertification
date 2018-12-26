@@ -4,6 +4,17 @@
   </div>
     <form>
     <div class="col">
+
+            <div class="form-group row">
+                <label for="inputProject" class="col-sm-2 col-form-label">Project:</label>
+                <div class="col-sm-5">
+                    <input #project="ngModel" [(ngModel)]="projectName" class="form-control" name="project" type="text" [disabled]="true" placeholder="Project Name" required/>
+                </div>
+                <button type="button" class="btn btn-primary" data-toggle="modal" (click) = "loadProjects()" data-target="#projectSearch">
+                        Search Project
+                </button>
+            </div>
+
             <div class="form-group row">
               <label for="inputTask" class="col-sm-2 col-form-label">Task:</label>
               <div class="col-sm-5">
@@ -41,6 +52,16 @@
                     <input #endDate="ngModel" [(ngModel)]="task.endDate" class="form-control" name="etDate" type="date"/>
                 </div>
             </div>
+
+            <div class="form-group row">
+                <label for="inputMgr" class="col-sm-2 col-form-label">User:</label>
+                <div class="col-sm-5">
+                    <input #manager="ngModel" [(ngModel)]="userName" class="form-control" name="manager" type="text" [disabled]="true" placeholder="User Name" required/>
+                </div>
+                <button type="button" class="btn btn-primary" data-toggle="modal" (click) = "loadUsers()" data-target="#searchUser">
+                        Search User
+                </button>
+            </div>
             <!-- Displaying error message Option-->
             <div class="form-group row">
                 <div *ngIf="!!(errorMsg)" class="alert alert-danger" role="alert"> {{ errorMsg }} </div>
@@ -49,8 +70,70 @@
       <div class="col-md-4 text-center"> 
       <button type="button" class="btn btn-primary mr-3" (click)="onSubmit()">Add</button>
       <button type="reset" class="btn btn-primary mr-3" (click)="reset()">Reset</button>
-      </div>
+      </div>    
     </div>
   </form>
+      
+    <!-- Modal to select Project-->
+    <div class="modal fade" id="projectSearch" tabindex="-1" role="dialog" aria-labelledby="projectSearchTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Search Project</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Search Projects-->
+                <div class="form-group row" *ngIf="projects?.length > 0">
+                        <label for="inputProject" class="col-sm-2 col-form-label">Project:</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" id="projectName" name="projectName" [(ngModel)]="projectId">
+                                <option *ngFor="let project of projects" value="{{project.id}}">{{project.project}}</option>
+                            </select>
+                        </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click) = "onProjectSelected()">Save</button>
+            </div>
+            </div>
+        </div>
+    </div>
+   <!-- End ModalProject selection -->
+  
+  <!-- Modal to select user-->
+  <div class="modal fade" id="searchUser" tabindex="-1" role="dialog" aria-labelledby="searchUserTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="searchUserTitle">Search User</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <!-- Search Users-->
+                <div class="form-group row" *ngIf="users?.length > 0">
+                        <label for="inputUser" class="col-sm-2 col-form-label">User:</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" id="userName" name="userName" [(ngModel)]="userId">
+                               <option *ngFor="let user of users" value="{{user.employeeId}}">{{user.firstName}} - {{user.lastName}}</option>
+                            </select>
+                        </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal" (click) = "onUserSelected()">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- End ModalUser selection -->
 
 </div>

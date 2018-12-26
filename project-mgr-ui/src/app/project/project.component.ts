@@ -29,6 +29,7 @@ export class ProjectComponent implements OnInit {
               private datePipe: DatePipe) {
     this.project = new Project();
     this.project.priority = 0;
+    this.isDateChecked = false;
   }
 
   ngOnInit() {
@@ -44,6 +45,7 @@ export class ProjectComponent implements OnInit {
 
   update(p: Project ): void {
     this.isUpdate = true;
+    this.project.id = p.id;
     this.project.project = p.project;
     this.project.startDate = p.startDate;
     this.project.endDate = p.endDate;
@@ -98,6 +100,8 @@ export class ProjectComponent implements OnInit {
     this.project.endDate = undefined;
     this.project.priority = 0;
     this.project.managerId = undefined;
+    this.userName = undefined;
+    this.isDateChecked = false;
   }
 
   public validateForm() {
@@ -122,7 +126,7 @@ export class ProjectComponent implements OnInit {
       this.errorMsg = `End Date should be greater than start date: ${formattedDate}`;
       return false;
     }
-    if (endDate && !this.project.startDate) {
+    if (this.project.endDate && !this.project.startDate) {
       this.errorMsg = `Start Date should be given when end date is given`;
       return false;
     }
@@ -140,7 +144,7 @@ export class ProjectComponent implements OnInit {
 
   onUserSelected() {
     this.users = this.users.filter(user => {
-      if (user.employeeId.toString().match(this.userId.toString())) {
+      if (user.employeeId == this.userId) {
         this.userName = user.firstName + '-' + user.lastName;
       }
   });

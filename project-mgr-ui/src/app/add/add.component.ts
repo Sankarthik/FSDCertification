@@ -5,6 +5,10 @@ import {Task} from '../model/task';
 import {ParentTask} from '../model/parentTask';
 import * as moment from 'moment';
 import { isNullOrUndefined } from 'util';
+import { ProjectService } from '../service/project.service';
+import { UserService } from '../service/user.service';
+import { User } from '../model/user';
+import { Project } from '../model/project';
 
 @Component({
   selector: 'app-task-add',
@@ -16,13 +20,20 @@ export class AddComponent implements OnInit {
   task: Task;
   parents = [];
   parentId: number;
+  users: User[];
+  projects: Project[];
+  projectName: string;
+  projectId: number;
+  userName: string;
+  userId: number;
   errorMsg: any;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private taskService: TaskService
-  ) {
+            private route: ActivatedRoute,
+            private router: Router,
+            private taskService: TaskService,
+            private projectService: ProjectService,
+            private userService: UserService) {
     this.task = new Task();
     this.task.priority = 1;
   }
@@ -51,6 +62,16 @@ export class AddComponent implements OnInit {
 
   private loadParents() {
     this.taskService.getAllTasks().then(value => this.parents = value);
+  }
+
+  loadUsers() {
+    this.userService.getAllUsers().then(value => this.users = value);
+  }
+
+  loadProjects(): void {
+    this.projectService.getAllProjects().then(value => {
+      this.projects = value;
+    });
   }
 
   public validateForm() {
@@ -87,6 +108,24 @@ export class AddComponent implements OnInit {
 
   public formatDate(date: any) {
     return moment(date).format('DD-MM-YYYY');
+  }
+
+  onUserSelected() {
+    this.users = this.users.filter(user => {
+      if (user.employeeId == this.userId) {
+        this.userName = user.firstName + '-' + user.lastName;
+      }
+  });
+     this.task.userId = this.userId;
+  }
+
+  onProjectSelected() {
+    this.projects = this.projects.filter(project => {
+      if (project.id == this.projectId) {
+        this.projectName = project.project;
+      }
+  });
+     this.task.projectId = this.projectId;
   }
 
 }
