@@ -34,12 +34,14 @@ public class ProjectService {
 		if (project != null) {
 			projectRepo.save(project);
 			
-			Optional<User> optUser = userRepo.findById(project.getManagerId());
-			if(optUser.isPresent()) {
-				User user = optUser.get();
-				user.setProject(project);
-				userRepo.save(user);
-			}
+			if(project.getManagerId() != null) {
+				Optional<User> optUser = userRepo.findById(project.getManagerId());
+				if(optUser.isPresent()) {
+					User user = optUser.get();
+					user.setProject(project);
+					userRepo.save(user);
+				}
+			}			
 		}
 	}
 

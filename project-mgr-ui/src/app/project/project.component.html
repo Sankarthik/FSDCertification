@@ -31,7 +31,6 @@
                         [disabled]=!isDateChecked class="form-control" name="etDate" type="date"/>
                     </div>
               </div>
-              
               <div>
                   <br/>
               </div>
@@ -43,10 +42,7 @@
                       name="priority" type="range" /> {{project.priority}}
                    </div>
               </div>
-  
-             
-  
-              
+
               <!-- Displaying error message Option-->
               <div class="form-group row">
                   <div *ngIf="!!(errorMsg)" class="alert alert-danger" role="alert"> {{ errorMsg }} </div>
@@ -62,7 +58,85 @@
         <div class="row">
             <br/><br/>
         </div>
-  
 
+        <!-- List Of Projects-->
+      <div class="card-body row text-left col-12">
+            <!-- Filter Section-->
+        <div>
+         <div class="row">
+             <div class="col-filter"><label for="filterByProject">Search</label></div>
+             <div class="col-sm-7"><input type="text" size = "40" [(ngModel)]="filterByProject" name="searchFilter" class="form-control"
+                 id="filterByProject"></div>           
+         </div><br/>
+         <div class="row">
+                    <div class="col col-filter"><label for="userFilter">Sort:</label></div>
+                    <button type="button" class="btn btn-primary btn-sm mr-3" (click)="filterStartDate(searchFilter)">Start Date</button>
+                    <button type="button" class="btn btn-primary btn-sm mr-3" (click)="filterEndDate(searchFilter)">End Date</button>
+                    <button type="button" class="btn btn-primary btn-sm mr-3" (click)="filterPriority(searchFilter)">Priority</button>
+                    <button type="button" class="btn btn-primary btn-sm mr-3" (click)="filterCompleted(searchFilter)">Completed</button>
+                    <button type="reset" class="btn btn-primary btn-sm mr-3" (click)="resetFilter()">Reset</button>
+         </div>
+        </div>            
+   
+             <table class="table table-hover align-san">
+               <tbody class="tbody">
+                 <tr *ngFor="let p of filteredProjects | projectFilter : filterByProject">
+                  <td>
+                    <table class="inner-table">
+                         <tr>
+                              <td colspan="2"><b>Project:</b> {{p.project}}</td>
+                         </tr>
+                         <tr>
+                             <td>
+                                 <table>
+                                     <tr>
+                                       <td><b>No of Tasks:</b> {{p.priority}}</td>
+                                     </tr>
+                                 </table>
+                             </td>
+                             <td>
+                                <table>
+                                    <tr>
+                                        <td><b>Completed:</b> {{p.priority}}</td>
+                                    </tr>
+                                </table>
+                             </td>                            
+                        </tr>
+                         <tr>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td><b>Start Date:</b> {{p.startDate}}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td><b>End Date:</b> {{p.endDate}}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                         </tr>
+                    </table>   
+                 </td>
+                 <td>
+                    <table class="inner-table">
+                        <tr>
+                            <td><b>Priority</b></td>  
+                        </tr>
+                        <tr>
+                            <td>{{p.priority}}</td>  
+                        </tr>
+                    </table>     
+                 </td>
+                   <td>
+                     <button type="button" class="btn btn-primary mr-3" (click)="update(p)">Update</button>
+                     <button type="button" class="btn btn-primary" (click)="suspend(p)">Suspend</button>
+                   </td>
+                 </tr>
+               </tbody>
+             </table>
+            </div>
   </div>
   

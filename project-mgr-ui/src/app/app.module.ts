@@ -19,6 +19,7 @@ import { UserService } from './service/user.service';
 import { UserFilterPipe } from './pipes/user-filter.pipe';
 import { ProjectComponent } from './project/project.component';
 import { ProjectService } from './service/project.service';
+import { ProjectPipe } from './pipes/project.pipe';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { ProjectService } from './service/project.service';
     TaskFilter,
     UserComponent,
     UserFilterPipe,
-    ProjectComponent
+    ProjectComponent,
+    ProjectPipe
   ],
   imports: [
     BrowserModule,

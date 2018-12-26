@@ -45,6 +45,16 @@ export class ProjectComponent implements OnInit {
     this.project.managerId = p.managerId;
   }
 
+  suspend(p: Project): void {
+    p.endDate = new Date(moment.now());
+    this.projectService.updateProject(p)
+      .then(
+        value => {
+          this.getProjects();
+        }
+      );
+  }
+
   onSubmit() {
     if (!this.validateForm()) {
       return false;
