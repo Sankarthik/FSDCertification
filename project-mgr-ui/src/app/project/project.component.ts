@@ -22,6 +22,7 @@ export class ProjectComponent implements OnInit {
   constructor(private projectService: ProjectService,
               private datePipe: DatePipe) {
     this.project = new Project();
+    this.project.priority = 0;
   }
 
   ngOnInit() {
@@ -92,13 +93,17 @@ export class ProjectComponent implements OnInit {
     }
 
     if (endDate < today || startDate < today) {
-      formattedDate = this.formatDate(today);    // moment(today).format('DD-MM-YYYY');
+      formattedDate = this.formatDate(today);
       this.errorMsg = `Start or End Date should be ${formattedDate} or in the future`;
       return false;
     }
     if (endDate < startDate) {
       formattedDate = this.formatDate(startDate);
       this.errorMsg = `End Date should be greater than start date: ${formattedDate}`;
+      return false;
+    }
+    if (endDate && !this.project.startDate) {
+      this.errorMsg = `Start Date should be given when end date is given`;
       return false;
     }
 
@@ -116,14 +121,16 @@ export class ProjectComponent implements OnInit {
   changeChkBox(event) {
     if (event.target.checked) {
       this.isDateChecked = true;
-      const startDate = new Date();
-      console.log(startDate);
-      this.datePipe.transform(startDate, 'yyyy-MM-dd');
-      console.log(this.datePipe.transform(startDate, 'MM-dd-yyyy'));
+      const today = new Date();
+      const endDate = new Date().setDate(today.getDate() + 1);
 
-      this.project.startDate = new Date(this.datePipe.transform(startDate, 'MM-dd-yyyy'));
+      this.project.startDate = <any> this.datePipe.transform(today, 'yyyy-MM-dd');
+      this.project.endDate = <any> this.datePipe.transform(endDate, 'yyyy-MM-dd');
+
     } else {
       this.isDateChecked = false;
+      this.project.startDate = undefined;
+      this.project.endDate = undefined;
     }
   }
 }
