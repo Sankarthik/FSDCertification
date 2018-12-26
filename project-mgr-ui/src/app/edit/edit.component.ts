@@ -5,6 +5,10 @@ import {TaskService} from '../service/task.service';
 import * as moment from 'moment';
 import { isNullOrUndefined } from 'util';
 import { ParentTask } from '../model/parentTask';
+import { User } from '../model/user';
+import { Project } from '../model/project';
+import { ProjectService } from '../service/project.service';
+import { UserService } from '../service/user.service';
 
 @Component({
   selector: 'app-task-update',
@@ -15,15 +19,21 @@ export class EditComponent implements OnInit {
   task: Task;
   parents: ParentTask[];
   parentId: number;
+  users: User[];
+  projectName: string;
+  projectId: number;
+  userName: string;
+  userId: number;
   today: any;
   errorMsg: any;
   tempStartDt: Date;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private taskService: TaskService
-  ) {
+            private route: ActivatedRoute,
+            private router: Router,
+            private taskService: TaskService,
+            private projectService: ProjectService,
+            private userService: UserService) {
     this.task = new Task();
    }
 
@@ -38,10 +48,28 @@ export class EditComponent implements OnInit {
     });
     this.today = moment().format('YYYY-MM-DD');
     this.loadParents();
+    this.loadProject(this.task.projectId);
+    this.loadUser(this.task.userId);
   }
 
   private loadParents() {
     this.taskService.getAllTasks().then(value => this.parents = value);
+  }
+
+  loadUsers() {
+    this.userService.getAllUsers().then(value => this.users = value);
+  }
+
+  loadProject(id: number): void {
+    this.projectService.getProject(id).then(value => {
+      this.projectName = value;
+    });
+  }
+
+  loadUser(id: number): void {
+    this.userService.getUser(id).then(value => {
+      this.userName = value;
+    });
   }
 
   onSubmit() {
@@ -106,4 +134,12 @@ export class EditComponent implements OnInit {
     return moment(date).format('DD-MM-YYYY');
   }
 
+  onUserSelected() {
+    this.users = this.users.filter(user => {
+      if (user.employeeId == this.userId) {
+        this.userName = user.firstName + '-' + user.lastName;
+      }
+  });
+     this.task.userId = this.userId;
+  }
 }

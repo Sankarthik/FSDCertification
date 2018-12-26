@@ -7,15 +7,18 @@
     </div>
       <form>
       <div class="col">
+                <div class="form-group row">
+                    <label for="inputProject" class="col-sm-2 col-form-label">Project:</label>
+                    <div class="col-sm-5">
+                        <input #project="ngModel" [(ngModel)]="projectName" class="form-control" name="project" type="text" [disabled]="true" placeholder="Project Name" required/>
+                    </div>
+                </div>
+
               <div class="form-group row">
                 <label for="inputTask" class="col-sm-2 col-form-label">Task:</label>
                 <div class="col-sm-5">
                     <input #taskName="ngModel" [(ngModel)]="task.task" class="form-control" name="taskName" type="text" required/>
                 </div>
-                 <!-- <div *ngIf="taskName.errors && (taskName.dirty || taskName.touched)" class="alert alert-danger">
-                        <div [hidden]="!taskName.errors.required">
-                          Task Name is required!
-                 </div> </div> -->
               </div>
   
               <div class="form-group row">
@@ -48,6 +51,16 @@
                       <input #endDate="ngModel" min="{{today}}" [(ngModel)]="task.endDate" class="form-control" name="etDate" type="date"/>
                   </div>
               </div>
+
+              <div class="form-group row">
+                    <label for="inputMgr" class="col-sm-2 col-form-label">User:</label>
+                    <div class="col-sm-5">
+                        <input #manager="ngModel" [(ngModel)]="userName" class="form-control" name="manager" type="text" [disabled]="true" placeholder="User Name" required/>
+                    </div>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" (click) = "loadUsers()" data-target="#searchUser">
+                            Search User
+                    </button>
+                </div>
              
                <!-- Displaying error message Option-->
             <div class="form-group row">
@@ -60,4 +73,35 @@
         </div>
       </div>
     </form>
+
+     <!-- Modal to select user-->
+  <div class="modal fade" id="searchUser" tabindex="-1" role="dialog" aria-labelledby="searchUserTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="searchUserTitle">Search User</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <!-- Search Users-->
+                <div class="form-group row" *ngIf="users?.length > 0">
+                        <label for="inputUser" class="col-sm-2 col-form-label">User:</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" id="userName" name="userName" [(ngModel)]="userId">
+                               <option *ngFor="let user of users" value="{{user.employeeId}}">{{user.firstName}} - {{user.lastName}}</option>
+                            </select>
+                        </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal" (click) = "onUserSelected()">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- End ModalUser selection -->
 </div>

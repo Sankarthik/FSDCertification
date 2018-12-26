@@ -19,6 +19,10 @@ export class ProjectService {
     return this.http.get<Project>(this.projectHttpUrl).toPromise().then(value => value);
   }
 
+  getProject(id: number): Promise<any> {
+    return this.http.get<Project>(this.projectHttpUrl + '' + id).toPromise().then(value => value);
+  }
+
   addProject(p: Project): Promise<any> {
     return this.http.post(this.projectHttpUrl, p).toPromise().then(value => value);
   }
