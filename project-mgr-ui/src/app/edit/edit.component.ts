@@ -45,10 +45,13 @@ export class EditComponent implements OnInit {
       if (!isNullOrUndefined(this.task.parentTask)) {
         this.parentId = this.task.parentTask.id;
       }
+      if (!isNullOrUndefined(this.task.project)) {
+        this.projectId = this.task.project.id;
+        this.loadProject(this.projectId);
+      }
     });
     this.today = moment().format('YYYY-MM-DD');
     this.loadParents();
-    this.loadProject(this.task.projectId);
     this.loadUser(this.task.userId);
   }
 
@@ -62,7 +65,7 @@ export class EditComponent implements OnInit {
 
   loadProject(id: number): void {
     this.projectService.getProject(id).then(value => {
-      this.projectName = value;
+      this.projectName = value.project;
     });
   }
 

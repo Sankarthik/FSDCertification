@@ -4,7 +4,7 @@
     resize: both;
     color: rgb(15, 15, 221);
     height: 300px;
-    display: inline-block;
+    /* display: inline-block; */
   }
 
 thead.thead-light th, .card-header {

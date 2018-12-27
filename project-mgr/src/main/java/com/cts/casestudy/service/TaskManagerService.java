@@ -8,9 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cts.casestudy.entities.ParentTask;
+import com.cts.casestudy.entities.Project;
 import com.cts.casestudy.entities.Task;
+import com.cts.casestudy.entities.User;
 import com.cts.casestudy.repos.ParentTaskManagerRepository;
+import com.cts.casestudy.repos.ProjectRepository;
 import com.cts.casestudy.repos.TaskManagerRepository;
+import com.cts.casestudy.repos.UserRepository;
 
 @Service
 public class TaskManagerService {
@@ -20,6 +24,12 @@ public class TaskManagerService {
 
 	@Autowired
 	ParentTaskManagerRepository parentRepo;
+
+	@Autowired
+	ProjectRepository projectRepo;
+
+	@Autowired
+	UserRepository userRepo;
 
 	public List<Task> findAllTasks() {
 		return repo.findAll();
@@ -31,6 +41,39 @@ public class TaskManagerService {
 	}
 
 	public void addTask(Task task) {
+		setParentTask(task);
+		setProject(task);
+
+		repo.save(task);
+		
+		setUser(task);
+	}
+
+	public void updateTask(Task task) {
+		setUser(task);
+		repo.save(task);
+	}
+
+	public void deleteTask(Integer id) {
+		Optional<Task> taskOpt = repo.findById(id);
+		if (taskOpt.isPresent()) {
+			Task task = taskOpt.get();
+			task.setParentTask(null);
+			task.setProject(null);
+			repo.deleteById(id);
+		}
+	}
+
+	public void endTask(Integer id) {
+		Optional<Task> taskOpt = repo.findById(id);
+		if (taskOpt.isPresent()) {
+			Task task = taskOpt.get();
+			task.setEndDate(new Date());
+			repo.save(task);
+		}
+	}
+
+	private void setParentTask(Task task) {
 		if (task.getParentTask() != null) {
 			Optional<Task> optTask = repo.findById(task.getParentTask().getId());
 
@@ -47,30 +90,26 @@ public class TaskManagerService {
 				task.setParentTask(parentTask);
 			}
 		}
-
-		repo.save(task);
 	}
 
-	public void updateTask(Task task) {
-		repo.save(task);
-	}
-
-	public void deleteTask(Integer id) {
-		Optional<Task> taskOpt = repo.findById(id);
-		if (taskOpt.isPresent()) {
-			Task task = taskOpt.get();
-			task.setParentTask(null);
-			repo.deleteById(id);
+	private void setUser(Task task) {
+		if (task.getUserId() != null) {
+			Optional<User> optUser = userRepo.findById(task.getUserId());
+			if (optUser.isPresent()) {
+				User user = optUser.get();
+				user.setTask(task);
+				userRepo.save(user);
+			}
 		}
-
 	}
 
-	public void endTask(Integer id) {
-		Optional<Task> taskOpt = repo.findById(id);
-		if (taskOpt.isPresent()) {
-			Task task = taskOpt.get();
-			task.setEndDate(new Date());
-			repo.save(task);
+	private void setProject(Task task) {
+		if (task.getProjectId() != null) {
+			Optional<Project> optProject = projectRepo.findById(task.getProjectId());
+			if (optProject.isPresent()) {
+				Project project = optProject.get();
+				task.setProject(project);
+			}
 		}
 	}
 }

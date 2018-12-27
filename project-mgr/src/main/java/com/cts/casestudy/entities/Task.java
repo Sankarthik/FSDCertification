@@ -9,8 +9,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -47,7 +49,18 @@ public class Task {
 	
 	@ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "PARENT_TASK_ID")
-	private ParentTask parentTask;		
+	private ParentTask parentTask;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "PROJECT_ID")
+	private Project project;
+	
+	@Transient
+	private Integer userId;
+	
+	@Transient
+	private Integer projectId;
+	
 
 	public Date getStartDate() {
 		return startDate;
@@ -91,6 +104,30 @@ public class Task {
 
 	public Integer getId() {
 		return id;
+	}	
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
+
+	public Integer getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(Integer projectId) {
+		this.projectId = projectId;
 	}
 
 	public Task(Integer id, @NotNull String task, Date startDate, Date endDate, Integer priority,

@@ -22,6 +22,10 @@ export class UserService {
     return this.http.get<User>(this.userHttpUrl + '' + id).toPromise().then(value => value);
   }
 
+  getUserByProject(id: number): Promise<any> {
+    return this.http.get<User>(this.userHttpUrl + '/projects/' + '' + id).toPromise().then(value => value);
+  }
+
   addUser(u: User): Promise<any> {
     return this.http.post(this.userHttpUrl, u).toPromise().then(value => value);
   }

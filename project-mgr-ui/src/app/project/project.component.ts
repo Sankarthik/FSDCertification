@@ -51,6 +51,7 @@ export class ProjectComponent implements OnInit {
     this.project.endDate = p.endDate;
     this.project.priority = p.priority;
     this.project.managerId = p.managerId;
+    this.getUserByProject(p.id);
   }
 
   suspend(p: Project): void {
@@ -92,6 +93,12 @@ export class ProjectComponent implements OnInit {
 
   loadUsers() {
     this.userService.getAllUsers().then(value => this.users = value);
+  }
+
+  getUserByProject(id: number): void {
+    this.userService.getUserByProject(id).then(user => {
+      this.userName = user.firstName + '-' + user.lastName;
+    });
   }
 
   emptyFields() {

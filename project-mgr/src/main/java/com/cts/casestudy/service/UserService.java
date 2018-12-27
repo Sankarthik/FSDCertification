@@ -23,6 +23,12 @@ public class UserService {
 		Optional<User> user = userRepo.findById(employeeId);
 		return user.isPresent() ? user.get() : null;
 	}
+	
+	public User findUserByProject(Integer projectId) {
+		List<User> users = userRepo.findByProjectId(projectId);
+		Optional<User> user = users.stream().findFirst();
+		return user.isPresent() ? user.get() : null;
+	}
 
 	public void addUser(User user) {
 		if (user != null) {

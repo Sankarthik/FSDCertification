@@ -1,4 +1,5 @@
 import {ParentTask} from './parentTask';
+import { Project } from './project';
 
 export class Task {
   id: number;
@@ -7,6 +8,7 @@ export class Task {
   startDate: Date;
   endDate: Date;
   parentTask: ParentTask;
+  project: Project;
   userId: number;
   projectId: number;
 }

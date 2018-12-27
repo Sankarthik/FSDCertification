@@ -23,9 +23,21 @@ public class User {
 	@Size(max = 100)
 	private String lastName;
 	
+	/*
+	 * One to Many should be handled here in a real time thinking as it increases lot of work,
+	 * To simplify using One To One mapping fo now
+	 */
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "PROJECT_ID")
 	private Project project;
+	
+	/*
+	 * One to Many should be handled here in a real time thinking as it increases lot of work,
+	 * To simplify using One To One mapping fo now
+	 */
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "TASK_ID")
+	private Task task;
 
 	public Integer getEmployeeId() {
 		return employeeId;
@@ -57,6 +69,14 @@ public class User {
 
 	public void setProject(Project project) {
 		this.project = project;
+	}
+
+	public Task getTask() {
+		return task;
+	}
+
+	public void setTask(Task task) {
+		this.task = task;
 	}
 
 	public User(@Digits(integer = 9, fraction = 0) Integer employeeId, @Size(max = 100) String firstName,

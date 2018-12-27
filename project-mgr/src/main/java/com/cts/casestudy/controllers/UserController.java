@@ -30,6 +30,11 @@ public class UserController {
 		return service.findUser(id);
 	}
 	
+	@RequestMapping(path="/users/projects/{id}", method=RequestMethod.GET)
+	public User findUserByProjectId(@PathVariable Integer id){
+		return service.findUserByProject(id);
+	}
+	
 	@RequestMapping(path="/users", method=RequestMethod.POST)
 	public void addUser(@RequestBody User user) {
 		 service.addUser(user);
