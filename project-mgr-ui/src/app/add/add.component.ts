@@ -5,6 +5,7 @@ import {Task} from '../model/task';
 import {ParentTask} from '../model/parentTask';
 import * as moment from 'moment';
 import { isNullOrUndefined } from 'util';
+import { DatePipe } from '@angular/common';
 import { ProjectService } from '../service/project.service';
 import { UserService } from '../service/user.service';
 import { User } from '../model/user';
@@ -29,16 +30,21 @@ export class AddComponent implements OnInit {
   userId: number;
   errorMsg: any;
   isParentTask: boolean;
+  today = new Date();
+  todayPlusOne = new Date().setDate(this.today.getDate() + 1);
 
   constructor(
             private route: ActivatedRoute,
             private router: Router,
             private taskService: TaskService,
             private projectService: ProjectService,
-            private userService: UserService) {
+            private userService: UserService,
+            private datePipe: DatePipe) {
     this.task = new Task();
     this.task.priority = 1;
     this.isParentTask = false;
+    this.task.startDate = this.formatDateWithPipe(this.today);
+    this.task.endDate = this.formatDateWithPipe(this.todayPlusOne);
   }
 
   ngOnInit() {
@@ -48,6 +54,10 @@ export class AddComponent implements OnInit {
   onSubmit() {
     if (!this.validateForm()) {
       return false;
+    }
+    if (this.isParentTask) {
+      // By Default setting start date to today logically.
+      this.task.startDate = this.formatDateWithPipe(this.today);
     }
 
     if (this.parentId != null) {
@@ -83,30 +93,38 @@ export class AddComponent implements OnInit {
     const endDate = new Date(this.task.endDate);
     const startDate = new Date(this.task.startDate);
     let formattedDate;
+    if (isNullOrUndefined(this.projectName) || this.projectName.trim().length < 1) {
+      this.errorMsg = `Project name is mandatory`;
+      return false;
+    }
     if (isNullOrUndefined(this.task.task) || this.task.task.trim().length < 1) {
       this.errorMsg = `Task name is mandatory`;
       return false;
     }
-    if (isNullOrUndefined(this.task.startDate) || (!this.task.startDate)) {
-      this.errorMsg = `Start Date is mandatory`;
-      return false;
+    if (!this.isParentTask) {
+      if (isNullOrUndefined(this.task.startDate) || (!this.task.startDate)) {
+        this.errorMsg = `Start Date is mandatory`;
+        return false;
+      }
+
+      if (endDate < today || startDate < today) {
+        formattedDate = this.formatDate(today);    // moment(today).format('DD-MM-YYYY');
+        this.errorMsg = `Start or End Date should be ${formattedDate} or in the future`;
+        return false;
+      }
+      if (endDate < startDate) {
+        formattedDate = this.formatDate(startDate);
+        this.errorMsg = `End Date should be greater than start date: ${formattedDate}`;
+        return false;
+      }
     }
 
-    if (endDate < today || startDate < today) {
-      formattedDate = this.formatDate(today);    // moment(today).format('DD-MM-YYYY');
-      this.errorMsg = `Start or End Date should be ${formattedDate} or in the future`;
-      return false;
-    }
-    if (endDate < startDate) {
-      formattedDate = this.formatDate(startDate);
-      this.errorMsg = `End Date should be greater than start date: ${formattedDate}`;
-      return false;
-    }
     return true;
   }
 
   public reset() {
     this.errorMsg = '';
+    this.isParentTask = false;
   }
 
   public formatDate(date: any) {
@@ -136,24 +154,25 @@ export class AddComponent implements OnInit {
       if (parent.id == this.parentId) {
         this.parentName = parent.task;
       }
-  });
-    // this.task.projectId = this.projectId;
+    });
   }
 
   changeChkBox(event) {
     if (event.target.checked) {
       this.isParentTask = true;
-      // const today = new Date();
-      // const endDate = new Date().setDate(today.getDate() + 1);
-
-      // this.project.startDate = <any> this.datePipe.transform(today, 'yyyy-MM-dd');
-      // this.project.endDate = <any> this.datePipe.transform(endDate, 'yyyy-MM-dd');
-
+      this.task.startDate = undefined;
+      this.task.endDate = undefined;
+      this.task.priority = 0;
     } else {
       this.isParentTask = false;
-      // this.project.startDate = undefined;
-      // this.project.endDate = undefined;
+
+     this.task.startDate = this.formatDateWithPipe(this.today);
+     this.task.endDate = this.formatDateWithPipe(this.todayPlusOne);
     }
+  }
+
+  formatDateWithPipe(date: any) {
+    return  <any> this.datePipe.transform(date, 'yyyy-MM-dd');
   }
 
 }
