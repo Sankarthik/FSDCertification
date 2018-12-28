@@ -1,10 +1,12 @@
 package com.cts.casestudy.service;
 
-import java.math.BigInteger;
+import static java.lang.Long.valueOf;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cts.casestudy.entities.Project;
+import com.cts.casestudy.entities.Task;
 import com.cts.casestudy.entities.User;
 import com.cts.casestudy.repos.ProjectRepository;
 import com.cts.casestudy.repos.UserRepository;
@@ -36,12 +39,15 @@ public class ProjectService {
 	
 	public List<Project> findAllProjectsWithTask() {
 		 List<Project> projects = new ArrayList<>();
+		 Predicate<Task> isCompleted = ct -> ct.getEndDate() != null && ct.getEndDate().before(new Date());
 		 projectRepo.findAll().stream().forEach(p -> {
 			 Project project = new Project(p.getId(), p.getProject(), 
 					 					   p.getStartDate(), p.getEndDate(), 
 					 					   p.getPriority());
-			 project.setCountOfTasks(fetchTaskCount(p.getId()).intValue());
-			 
+			 List<Task> noOfTasks = fetchTaskCount(p.getId());
+			 project.setCountOfTasks(noOfTasks.size());
+			 project.setCountOfCompletedTasks(valueOf(noOfTasks.stream().filter(isCompleted).count()).intValue());
+							 
 			 projects.add(project);
 		 });
 		 
@@ -50,7 +56,6 @@ public class ProjectService {
 
 	public Project findProject(Integer projectId) {
 		Optional<Project> project = projectRepo.findById(projectId);
-		System.out.println(fetchTaskCount(projectId));
 		return project.isPresent() ? project.get() : null;
 	}
 
@@ -82,12 +87,13 @@ public class ProjectService {
 		}
 	}
 
-	public BigInteger fetchTaskCount(int projectId) {
-	    Query nativeQuery = entityManager.createNativeQuery("select count(*) from task t "
+	@SuppressWarnings("unchecked")
+	public List<Task> fetchTaskCount(int projectId) {
+	    Query nativeQuery = entityManager.createNativeQuery("select t.* from task t "
 	    		+ "left outer join project p on t.project_id = p.id "
-	    		+ "where p.id=:id")
+	    		+ "where p.id=:id", Task.class)
 	    		.setParameter("id", projectId);
 	    
-	    return (BigInteger) nativeQuery.getSingleResult();
+	    return (List<Task>) nativeQuery.getResultList();
 	}
 }
