@@ -23,7 +23,11 @@ export class UserService {
   }
 
   getUserByProject(id: number): Promise<any> {
-    return this.http.get<User>(this.userHttpUrl + '/projects/' + '' + id).toPromise().then(value => value);
+    return this.http.get<User>(this.userHttpUrl + 'projects/' + '' + id).toPromise().then(value => value);
+  }
+
+  getUserByTask(id: number): Promise<any> {
+    return this.http.get<User>(this.userHttpUrl + 'tasks/' + '' + id).toPromise().then(value => value);
   }
 
   addUser(u: User): Promise<any> {

@@ -49,10 +49,10 @@ export class EditComponent implements OnInit {
         this.projectId = this.task.project.id;
         this.loadProject(this.projectId);
       }
+      this.getUserByTask(this.task.id);
     });
     this.today = moment().format('YYYY-MM-DD');
     this.loadParents();
-    this.loadUser(this.task.userId);
   }
 
   private loadParents() {
@@ -72,6 +72,12 @@ export class EditComponent implements OnInit {
   loadUser(id: number): void {
     this.userService.getUser(id).then(value => {
       this.userName = value;
+    });
+  }
+
+  getUserByTask(id: number): void {
+    this.userService.getUserByTask(id).then(user => {
+      this.userName = user.firstName + '-' + user.lastName;
     });
   }
 

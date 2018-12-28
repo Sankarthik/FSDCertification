@@ -35,6 +35,11 @@ public class UserController {
 		return service.findUserByProject(id);
 	}
 	
+	@RequestMapping(path="/users/tasks/{id}", method=RequestMethod.GET)
+	public User findUserByTaskId(@PathVariable Integer id){
+		return service.findUserByTask(id);
+	}
+	
 	@RequestMapping(path="/users", method=RequestMethod.POST)
 	public void addUser(@RequestBody User user) {
 		 service.addUser(user);

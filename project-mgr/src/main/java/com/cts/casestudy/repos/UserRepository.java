@@ -10,4 +10,5 @@ import com.cts.casestudy.entities.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 	public List<User> findByProjectId(Integer id);
+	public List<User> findByTaskId(Integer id);
 }

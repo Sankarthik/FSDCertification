@@ -21,12 +21,22 @@ public class UserService {
 
 	public User findUser(Integer employeeId) {
 		Optional<User> user = userRepo.findById(employeeId);
-		return user.isPresent() ? user.get() : null;
+		return getUser(user);
 	}
 	
 	public User findUserByProject(Integer projectId) {
 		List<User> users = userRepo.findByProjectId(projectId);
 		Optional<User> user = users.stream().findFirst();
+		return getUser(user);
+	}
+	
+	public User findUserByTask(Integer taskId) {
+		List<User> users = userRepo.findByTaskId(taskId);
+		Optional<User> user = users.stream().findFirst();
+		return getUser(user);
+	}
+	
+	private User getUser(Optional<User> user) {
 		return user.isPresent() ? user.get() : null;
 	}
 
