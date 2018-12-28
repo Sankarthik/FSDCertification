@@ -44,6 +44,12 @@ public class Project {
 	
 	@Transient
 	private Integer managerId;
+	
+	@Transient
+	private Integer countOfTasks;
+	
+	@Transient
+	private Integer countOfCompletedTasks;
 
 	public Date getStartDate() {
 		return startDate;
@@ -87,6 +93,22 @@ public class Project {
 
 	public void setManagerId(Integer managerId) {
 		this.managerId = managerId;
+	}
+	
+	public Integer getCountOfTasks() {
+		return countOfTasks;
+	}
+
+	public void setCountOfTasks(Integer countOfTasks) {
+		this.countOfTasks = countOfTasks;
+	}
+
+	public Integer getCountOfCompletedTasks() {
+		return countOfCompletedTasks;
+	}
+
+	public void setCountOfCompletedTasks(Integer countOfCompletedTasks) {
+		this.countOfCompletedTasks = countOfCompletedTasks;
 	}
 
 	public Project(Integer id, @NotNull String project, Date startDate, Date endDate, Integer priority) {

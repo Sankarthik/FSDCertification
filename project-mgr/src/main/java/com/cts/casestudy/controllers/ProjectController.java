@@ -24,6 +24,11 @@ public class ProjectController {
 	public List<Project> findAllProjects() {
 		return service.findAllProjects();
 	}
+	
+	@RequestMapping(path = "/projects/tasks", method = RequestMethod.GET)
+	public List<Project> findAllProjectsWithTask() {
+		return service.findAllProjectsWithTask();
+	}
 
 	@RequestMapping(path = "/projects/{id}", method = RequestMethod.GET)
 	public Project findProject(@PathVariable Integer id) {

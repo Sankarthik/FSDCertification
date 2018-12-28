@@ -37,7 +37,7 @@ export class ProjectComponent implements OnInit {
   }
 
   getProjects(): void {
-    this.projectService.getAllProjects().then(value => {
+    this.projectService.getAllProjectsWithTasks().then(value => {
       this.projects = value;
       this.filteredProjects = value;
     });

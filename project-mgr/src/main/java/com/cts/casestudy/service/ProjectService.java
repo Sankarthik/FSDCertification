@@ -1,8 +1,14 @@
 package com.cts.casestudy.service;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +20,9 @@ import com.cts.casestudy.repos.UserRepository;
 
 @Service
 public class ProjectService {
+	
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	@Autowired
 	ProjectRepository projectRepo;
@@ -24,9 +33,24 @@ public class ProjectService {
 	public List<Project> findAllProjects() {
 		return projectRepo.findAll();
 	}
+	
+	public List<Project> findAllProjectsWithTask() {
+		 List<Project> projects = new ArrayList<>();
+		 projectRepo.findAll().stream().forEach(p -> {
+			 Project project = new Project(p.getId(), p.getProject(), 
+					 					   p.getStartDate(), p.getEndDate(), 
+					 					   p.getPriority());
+			 project.setCountOfTasks(fetchTaskCount(p.getId()).intValue());
+			 
+			 projects.add(project);
+		 });
+		 
+		 return projects;
+	}
 
 	public Project findProject(Integer projectId) {
 		Optional<Project> project = projectRepo.findById(projectId);
+		System.out.println(fetchTaskCount(projectId));
 		return project.isPresent() ? project.get() : null;
 	}
 
@@ -56,5 +80,14 @@ public class ProjectService {
 			project.setEndDate(new Date());
 			projectRepo.save(project);
 		}
+	}
+
+	public BigInteger fetchTaskCount(int projectId) {
+	    Query nativeQuery = entityManager.createNativeQuery("select count(*) from task t "
+	    		+ "left outer join project p on t.project_id = p.id "
+	    		+ "where p.id=:id")
+	    		.setParameter("id", projectId);
+	    
+	    return (BigInteger) nativeQuery.getSingleResult();
 	}
 }

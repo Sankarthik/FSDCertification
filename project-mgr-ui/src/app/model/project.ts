@@ -5,4 +5,6 @@ export class Project {
   startDate: Date;
   endDate: Date;
   managerId: number;
+  countOfTasks: number;
+  countOfCompletedTasks: number;
 }
