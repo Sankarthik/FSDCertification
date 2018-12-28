@@ -79,6 +79,8 @@ To run docker inside Jenkins
 ----------------------------
 docker run -u root -p 8088:8080 -v jenkins-data:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock -v "/C/Users/GiridharanS":/home jenkinsci/blueocean
 
+System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "sandbox allow-scripts; default-src 'self'; style-src 'self' 'unsafe-inline';")
+
 login into container
 --------------------
 docker exec -it <mycontainer> bash
