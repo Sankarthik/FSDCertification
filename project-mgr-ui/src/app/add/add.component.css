@@ -14,3 +14,11 @@
   -webkit-transition: .2s;
   transition: opacity .2s;
 }
+
+.parent-check-label {   
+  margin-left: 27%;
+  text-align: left;
+  font-weight: bold;
+  font-size: large;
+  box-align: inherit;
+}

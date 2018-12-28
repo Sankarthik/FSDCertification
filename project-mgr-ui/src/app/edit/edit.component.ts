@@ -6,7 +6,6 @@ import * as moment from 'moment';
 import { isNullOrUndefined } from 'util';
 import { ParentTask } from '../model/parentTask';
 import { User } from '../model/user';
-import { Project } from '../model/project';
 import { ProjectService } from '../service/project.service';
 import { UserService } from '../service/user.service';
 
@@ -17,8 +16,8 @@ import { UserService } from '../service/user.service';
 })
 export class EditComponent implements OnInit {
   task: Task;
-  parents: ParentTask[];
   parentId: number;
+  parentName: string;
   users: User[];
   projectName: string;
   projectId: number;
@@ -44,29 +43,19 @@ export class EditComponent implements OnInit {
       this.tempStartDt = this.task.startDate;
       if (!isNullOrUndefined(this.task.parentTask)) {
         this.parentId = this.task.parentTask.id;
+        this.parentName = this.task.parentTask.task;
       }
       if (!isNullOrUndefined(this.task.project)) {
         this.projectId = this.task.project.id;
-        this.loadProject(this.projectId);
+        this.projectName = this.task.project.project;
       }
       this.getUserByTask(this.task.id);
     });
     this.today = moment().format('YYYY-MM-DD');
-    this.loadParents();
-  }
-
-  private loadParents() {
-    this.taskService.getAllTasks().then(value => this.parents = value);
   }
 
   loadUsers() {
     this.userService.getAllUsers().then(value => this.users = value);
-  }
-
-  loadProject(id: number): void {
-    this.projectService.getProject(id).then(value => {
-      this.projectName = value.project;
-    });
   }
 
   loadUser(id: number): void {
@@ -85,11 +74,7 @@ export class EditComponent implements OnInit {
     if (!this.validateForm()) {
       return false;
     }
-    if (this.parentId != null) {
-      const parent = new ParentTask();
-      parent.id = this.parentId;
-      this.task.parentTask = parent;
-    }
+
     this.taskService.updateTask(this.task.id, this.task)
       .then(
        value => { this.router.navigate(['./view']);

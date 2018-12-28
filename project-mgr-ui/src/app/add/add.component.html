@@ -22,6 +22,12 @@
                </div>
             </div>
 
+            <div class="form-check parent-check-label row">
+                <input type="checkbox" class="form-check-input" 
+                       (ng-model)="isParentTask" id="parentTaskChecked" [checked]="isParentTask" (change)="changeChkBox($event)">
+                <label class="form-check-label" for="isParentTaskChkLabel">Parent Task</label>
+            </div><br/>
+
             <div class="form-group row">
                 <label for="inputPriority" class="col-sm-2 col-form-label">Priority:</label>
                 <div class="col-sm-5">
@@ -30,13 +36,14 @@
                  </div>
             </div>
 
-            <div class="form-group row" *ngIf="parents?.length > 0">
+            <div class="form-group row">
                 <label for="inputParentTask" class="col-sm-2 col-form-label">Parent Task:</label>
                 <div class="col-sm-5">
-                    <select class="form-control" id="parentTask" name="parent" [(ngModel)]="parentId">
-                        <option *ngFor="let parent of parents" value="{{parent.id}}">{{parent.task}}</option>
-                      </select>
-                 </div>
+                    <input #project="ngModel" [(ngModel)]="parentName" class="form-control" name="parent" type="text" [disabled]="true" placeholder="Parent Task" required/>
+                </div>
+                <button type="button" class="btn btn-primary" data-toggle="modal" (click) = "loadParents()" data-target="#parentTaskSearch">
+                        Search
+                </button>
             </div>
 
             <div class="form-group row">
@@ -104,9 +111,39 @@
         </div>
     </div>
    <!-- End ModalProject selection -->
+
+   <!-- Modal to select Parent Task-->
+   <div class="modal fade" id="parentTaskSearch" tabindex="-1" role="dialog" aria-labelledby="parentTaskTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Search Parent Task</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <!-- Search Parent Task-->
+            <div class="form-group row" *ngIf="parents?.length > 0">
+                <label for="inputParentTask" class="col-sm-2 col-form-label">Parent Task:</label>
+                <div class="col-sm-5">
+                    <select class="form-control" id="parentTask" name="parent" [(ngModel)]="parentId">
+                        <option *ngFor="let parent of parents" value="{{parent.id}}">{{parent.task}}</option>
+                      </select>
+                 </div>
+            </div>
+        </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click) = "onParentTaskSelected()">Save</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- End ModalParentTask selection -->
   
   <!-- Modal to select user-->
-  <div class="modal fade" id="searchUser" tabindex="-1" role="dialog" aria-labelledby="searchUserTitle" aria-hidden="true">
+    <div class="modal fade" id="searchUser" tabindex="-1" role="dialog" aria-labelledby="searchUserTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -133,7 +170,7 @@
             </div>
           </div>
         </div>
-      </div>
+    </div>
     <!-- End ModalUser selection -->
 
 </div>

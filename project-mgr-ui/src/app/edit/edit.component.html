@@ -28,15 +28,13 @@
                       name="priority" type="range"/> {{task.priority}}
                    </div>
               </div>
-  
-              <div class="form-group row" *ngIf="parents?.length > 0">
-                  <label for="inputParentTask" class="col-sm-2 col-form-label">Parent Task:</label>
-                  <div class="col-sm-5">
-                      <select class="form-control" id="parentTask" name="parentTask" [(ngModel)]="parentId">
-                          <option *ngFor="let parent of parents" value="{{parent.id}}">{{parent.task}}</option>
-                        </select>
-                   </div>
-              </div>
+
+              <div class="form-group row">
+                <label for="inputParentTask" class="col-sm-2 col-form-label">Parent Task:</label>
+                <div class="col-sm-5">
+                    <input #project="ngModel" [(ngModel)]="parentName" class="form-control" name="parent" type="text" [disabled]="true" placeholder="Parent Task" required/>
+                </div>
+            </div>
   
               <div class="form-group row">
                   <label for="inputStartDate" class="col-sm-2 col-form-label">Start Date:</label>

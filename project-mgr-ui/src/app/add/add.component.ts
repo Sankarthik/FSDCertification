@@ -20,6 +20,7 @@ export class AddComponent implements OnInit {
   task: Task;
   parents = [];
   parentId: number;
+  parentName: string;
   users: User[];
   projects: Project[];
   projectName: string;
@@ -27,6 +28,7 @@ export class AddComponent implements OnInit {
   userName: string;
   userId: number;
   errorMsg: any;
+  isParentTask: boolean;
 
   constructor(
             private route: ActivatedRoute,
@@ -36,6 +38,7 @@ export class AddComponent implements OnInit {
             private userService: UserService) {
     this.task = new Task();
     this.task.priority = 1;
+    this.isParentTask = false;
   }
 
   ngOnInit() {
@@ -126,6 +129,31 @@ export class AddComponent implements OnInit {
       }
   });
      this.task.projectId = this.projectId;
+  }
+
+  onParentTaskSelected() {
+    this.parents = this.parents.filter(parent => {
+      if (parent.id == this.parentId) {
+        this.parentName = parent.task;
+      }
+  });
+    // this.task.projectId = this.projectId;
+  }
+
+  changeChkBox(event) {
+    if (event.target.checked) {
+      this.isParentTask = true;
+      // const today = new Date();
+      // const endDate = new Date().setDate(today.getDate() + 1);
+
+      // this.project.startDate = <any> this.datePipe.transform(today, 'yyyy-MM-dd');
+      // this.project.endDate = <any> this.datePipe.transform(endDate, 'yyyy-MM-dd');
+
+    } else {
+      this.isParentTask = false;
+      // this.project.startDate = undefined;
+      // this.project.endDate = undefined;
+    }
   }
 
 }
