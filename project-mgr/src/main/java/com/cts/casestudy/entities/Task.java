@@ -55,6 +55,8 @@ public class Task {
 	@JoinColumn(name = "PROJECT_ID")
 	private Project project;
 	
+	private String status;
+	
 	@Transient
 	private Integer userId;
 	
@@ -128,6 +130,14 @@ public class Task {
 
 	public void setProjectId(Integer projectId) {
 		this.projectId = projectId;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public Task(Integer id, @NotNull String task, Date startDate, Date endDate, Integer priority,

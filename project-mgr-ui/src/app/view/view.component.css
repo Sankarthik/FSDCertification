@@ -19,6 +19,19 @@ thead.thead-light th, .card-header {
 
  .mr3 {
    margin-right: auto;
+   margin-left: auto;
  }
+
+ .col-filter {
+  margin-left: 3%;
+  text-align: left;
+  font-weight: bold
+}
+
+.sort-filter {
+  margin-left: 20%;
+  text-align: left;
+  font-weight: bold
+}
 
   

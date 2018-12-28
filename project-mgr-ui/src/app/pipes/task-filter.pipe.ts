@@ -10,7 +10,7 @@ import { Task } from '../model/task';
 export class TaskFilter implements PipeTransform {
 
   transform(tasks: Array<Task>, filterTask?: string,
-                                filterByParentTask?: number,
+                                filterByParentTask?: string,
                                 filterByPriorityFrom?: number,
                                 filterByPriorityTo?: number,
                                 filterByStartDate?: Date,
@@ -21,10 +21,15 @@ export class TaskFilter implements PipeTransform {
     }
 
     if (filterByParentTask) {
+      // tasks = tasks.filter(task => {
+      //   const id = task.parentTask !== null ? task.parentTask.id : null;
+      //   if (id === filterByParentTask) {
+      //     return task;
+      //   }
+      // });
       tasks = tasks.filter(task => {
-        const id = task.parentTask !== null ? task.parentTask.id : null;
-        if (id === filterByParentTask) {
-          return task;
+        if (task.parentTask !== null && task.parentTask.task !== null) {
+          return task.parentTask.task.toUpperCase().startsWith(filterByParentTask.toUpperCase());
         }
       });
     }

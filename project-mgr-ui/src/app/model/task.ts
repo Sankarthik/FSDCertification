@@ -11,4 +11,5 @@ export class Task {
   project: Project;
   userId: number;
   projectId: number;
+  status: string;
 }

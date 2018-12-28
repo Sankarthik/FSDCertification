@@ -5,13 +5,28 @@
         <div class="card text-center">
           <div class="card-header"> View Task</div>
           <div class="filter-class card-body">
+            <div class = "row">
+              <div class="col-filter"><label for="inputProject">Project:</label></div>
+                  <div class="col-sm-3">
+                      <input #project="ngModel" [(ngModel)]="projectName" class="form-control" name="project" type="text" [disabled]="true" placeholder="Project Name" required/>
+                  </div>
+                  <button type="button" class="btn btn-primary" data-toggle="modal" (click) = "loadProjects()" data-target="#projectSearch">
+                          Search
+                  </button>
+                  <div class="col sort-filter"><label for="userFilter">Sort:</label></div>
+                  <button type="button" class="btn btn-primary btn-sm mr-3" (click)="sortByStartDate()">Start Date</button>
+                  <button type="button" class="btn btn-primary btn-sm mr-3" (click)="sortByEndDate()">End Date</button>
+                  <button type="button" class="btn btn-primary btn-sm mr-3" (click)="sortByPriority()">Priority</button>
+                  <button type="button" class="btn btn-primary btn-sm mr-3" (click)="sortByCompleted()">Completed</button>
+            </div><br/>
+              
             <div class="row">
               <div class="col-md-3  mb-3"><label for="filterByName">Task</label></div>
               <div class="col-md-3  mb-3"><input type="text" name="task" [(ngModel)]="filterByName" class="form-control"
                   id="filterByName"></div>
 
               <div class="col-md-3  mb-3"><label for="filterByParentTask">Parent Task</label></div>
-              <div class="col-md-3  mb-3"><input type="text" (keypress)="numberOnly($event)" name="parentTask" [(ngModel)]="filterByParentTask"
+              <div class="col-md-3  mb-3"><input type="text" name="parentTask" [(ngModel)]="filterByParentTask"
                   class="form-control" id="filterByParentTask"></div>
 
               <div class="col-md-3  mb-3"><label for="filterByPriorityFrom">Priority From</label></div>
@@ -38,7 +53,7 @@
             <table class="table table-hover san">
               <thead class="thead-light">
                 <tr>
-                  <th scope="col">ID</th>
+                  <!-- <th scope="col">ID</th> -->
                   <th scope="col">Task</th>
                   <th scope="col">Parent Task</th>
                   <th scope="col">Priority</th>
@@ -55,16 +70,17 @@
                                                           : filterByStartDate
                                                           : filterByEndDate">
 
-                  <td>{{t.id}}</td>
+                  <!-- <td>{{t.id}}</td> -->
                   <td>{{t.task}}</td>
-                  <td>{{t.parentTask?t.parentTask.id: null}}</td>
+                  <td>{{t.parentTask?t.parentTask.task: null}}</td>
                   <td>{{t.priority}}</td>
                   <td>{{t.startDate | date:"dd-MM-yyyy"}}</td>
                   <td>{{t.endDate | date:"dd-MM-yyyy"}}</td>
                   <td>
                     <button type="button" class="btn btn-primary mr-3" [disabled] = isTaskExpired(t) (click)="update(t)">Edit</button>
                     <button type="button" class="btn btn-primary" [disabled] = isTaskExpired(t) *ngIf="isTaskActive(t)" (click)="finishTask(t)">End Task</button>
-                    <button type="button" class="btn btn-primary" [disabled] = isTaskExpired(t) *ngIf="!isTaskActive(t)" (click)="delete(t)">Delete</button>
+                    <!-- Delete is removed here as expected by case study, but functionality exists, upon uncommenting this, should work with little more code change -->
+                    <!-- <button type="button" class="btn btn-primary" [disabled] = isTaskExpired(t) *ngIf="!isTaskActive(t)" (click)="delete(t)">Delete</button> -->
                   </td>
                 </tr>
               </tbody>
@@ -74,4 +90,35 @@
       </div>
     </div>
   </form>
+
+  <!-- Modal to select Project-->
+  <div class="modal fade" id="projectSearch" tabindex="-1" role="dialog" aria-labelledby="projectSearchTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Search Project</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <!-- Search Projects-->
+              <div class="form-group row" *ngIf="projects?.length > 0">
+                      <label for="inputProject" class="col-sm-2 col-form-label">Project:</label>
+                      <div class="col-sm-7">
+                          <select class="form-control" id="projectName" name="projectName" [(ngModel)]="projectId">
+                              <option *ngFor="let project of projects" value="{{project.id}}">{{project.project}}</option>
+                          </select>
+                      </div>
+              </div>
+
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal" (click) = "onProjectSelected()">Save</button>
+          </div>
+          </div>
+      </div>
+  </div>
+  <!-- End ModalProject selection -->
 </div>
