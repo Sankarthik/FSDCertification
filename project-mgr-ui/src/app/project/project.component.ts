@@ -188,14 +188,15 @@ export class ProjectComponent implements OnInit {
   // Sorting in descending order by Prority
   sortByPriority() {
     this.filteredProjects = this.projects.sort ((a: any, b: any) =>
-      new Date(b.priority).getTime() - new Date(a.priority).getTime()
+        b.priority - a.priority
     );
   }
-  // Sorting in descending order by Completed
+  // Sorting in descending order by Completed (end date in desc order)
   sortByCompleted() {
-    // this.filteredProjects = this.projects.sort ((a: any, b: any) =>
-    //   new Date(b.priority).getTime() - new Date(a.priority).getTime()
-    // );
+      this.filteredProjects = this.projects.filter(p => this.isProjectExpired(p));
+      this.filteredProjects = this.filteredProjects.sort ((a: any, b: any) =>
+          new Date(b.endDate).getTime() - new Date(a.endDate).getTime()
+      );
   }
 
   isProjectExpired(p: Project): boolean {

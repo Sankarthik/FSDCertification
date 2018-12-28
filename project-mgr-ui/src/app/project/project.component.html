@@ -173,7 +173,7 @@
                  </td>
                    <td>
                      <button type="button" class="btn btn-primary mr-3" [disabled] = isProjectExpired(p) (click)="update(p)">Update</button>
-                     <button type="button" class="btn btn-primary" (click)="suspend(p)">Suspend</button>
+                     <button type="button" class="btn btn-primary" [disabled] = isProjectExpired(p) (click)="suspend(p)">Suspend</button>
                    </td>
                  </tr>
                </tbody>

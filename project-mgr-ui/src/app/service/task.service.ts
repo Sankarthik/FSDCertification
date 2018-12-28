@@ -24,6 +24,10 @@ export class TaskService {
     return this.http.get(this.taskHttpUrl + '' + id).toPromise().then(value => value);
   }
 
+  getTaskByProject(id: number): Promise<any> {
+    return this.http.get<Task>(this.taskHttpUrl + 'projects/' + '' + id).toPromise().then(value => value);
+  }
+
   addTask(t: Task): Promise<any> {
     return this.http.post(this.taskHttpUrl, t).toPromise().then(value => value);
   }

@@ -30,6 +30,11 @@ public class TaskManagerController {
 		return service.findTask(id);
 	}
 	
+	@RequestMapping(path="/tasks/projects/{id}", method=RequestMethod.GET)
+	public List<Task> findTaskByProject(@PathVariable Integer id){
+		return service.findTaskByProject(id);
+	}
+	
 	@RequestMapping(path="/tasks", method=RequestMethod.POST)
 	public void addTask(@RequestBody Task task) {
 		 service.addTask(task);

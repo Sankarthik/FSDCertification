@@ -20,4 +20,5 @@ public interface TaskManagerRepository extends JpaRepository<Task, Integer>{
 	public List<Task> findByPriorityLessThanEqual(Integer priority);
 	public List<Task> findByParentTaskTask(String name);
 	public List<Task> findByParentTaskId(Integer id);
+	public List<Task> findByProjectId(Integer id);
 }

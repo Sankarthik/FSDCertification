@@ -13,7 +13,7 @@ import { ProjectService } from '../service/project.service';
 })
 export class ViewComponent implements OnInit {
   tasks: Task[];
-  // filterTask: Task;
+  filteredTasks: Task[];
   filterByName: string;
   filterByParentTask: number;
   filterByPriorityFrom: number;
@@ -34,12 +34,14 @@ export class ViewComponent implements OnInit {
 
   ngOnInit() {
     this.getTasks();
-    // this.filterTask = new Task();
     this.currentDate =  new Date();
   }
 
   getTasks(): void {
-    this.taskService.getAllTasks().then(value => this.tasks = value);
+    this.taskService.getAllTasks().then(value => {
+      this.tasks = value;
+      this.filteredTasks = value;
+    });
   }
   update(t: Task ): void {
     this.router.navigate(['/update' , t.id]);
@@ -87,36 +89,48 @@ export class ViewComponent implements OnInit {
     });
   }
 
+  getTaskByProject(id: number): void {
+    this.taskService.getTaskByProject(id).then(task => {
+      this.filteredTasks = task;
+    });
+  }
+
   onProjectSelected() {
     this.projects = this.projects.filter(project => {
       if (project.id == this.projectId) {
         this.projectName = project.project;
       }
     });
+    this.getTaskByProject(this.projectId);
   }
 
   // Sorting in ascending order by Start Date
   sortByStartDate() {
-    this.filteredProjects = this.projects.sort ((a: any, b: any) =>
+    this.filteredTasks = this.tasks.sort ((a: any, b: any) =>
       new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
     );
   }
    // Sorting in ascending order by End Date
    sortByEndDate() {
-    this.filteredProjects = this.projects.sort ((a: any, b: any) =>
+    this.filteredTasks = this.tasks.sort ((a: any, b: any) =>
       new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
     );
   }
   // Sorting in descending order by Prority
   sortByPriority() {
-    this.filteredProjects = this.projects.sort ((a: any, b: any) =>
-      new Date(b.priority).getTime() - new Date(a.priority).getTime()
+    this.filteredTasks = this.tasks.sort ((a: any, b: any) =>
+       b.priority - a.priority
     );
   }
-  // Sorting in descending order by Completed
+  // Sorting in descending order by Completed (end date in desc order)
   sortByCompleted() {
-    // this.filteredProjects = this.projects.sort ((a: any, b: any) =>
-    //   new Date(b.priority).getTime() - new Date(a.priority).getTime()
-    // );
+      this.filteredTasks = this.tasks.filter(t => this.isTaskExpired(t));
+      this.filteredTasks = this.filteredTasks.sort ((a: any, b: any) =>
+        new Date(b.endDate).getTime() - new Date(a.endDate).getTime()
+      );
+  }
+
+  resetFilter() {
+    this.getTasks();
   }
 }

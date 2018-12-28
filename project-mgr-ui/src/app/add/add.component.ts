@@ -146,7 +146,7 @@ export class AddComponent implements OnInit {
         this.projectName = project.project;
       }
   });
-     this.task.projectId = this.projectId;
+     this.task.projId = this.projectId;
   }
 
   onParentTaskSelected() {

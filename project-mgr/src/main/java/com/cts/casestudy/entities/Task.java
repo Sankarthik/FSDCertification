@@ -61,7 +61,7 @@ public class Task {
 	private Integer userId;
 	
 	@Transient
-	private Integer projectId;
+	private Integer projId;
 	
 
 	public Date getStartDate() {
@@ -124,12 +124,12 @@ public class Task {
 		this.project = project;
 	}
 
-	public Integer getProjectId() {
-		return projectId;
+	public Integer getProjId() {
+		return projId;
 	}
 
-	public void setProjectId(Integer projectId) {
-		this.projectId = projectId;
+	public void setProjId(Integer projectId) {
+		this.projId = projectId;
 	}
 
 	public String getStatus() {

@@ -10,6 +10,6 @@ export class Task {
   parentTask: ParentTask;
   project: Project;
   userId: number;
-  projectId: number;
+  projId: number;
   status: string;
 }

@@ -72,6 +72,10 @@ public class TaskManagerService {
 			repo.save(task);
 		}
 	}
+	
+	public List<Task> findTaskByProject(Integer projectId) {
+		return repo.findByProjectId(projectId);
+	}
 
 	private void setParentTask(Task task) {
 		if (task.getParentTask() != null) {
@@ -104,8 +108,8 @@ public class TaskManagerService {
 	}
 
 	private void setProject(Task task) {
-		if (task.getProjectId() != null) {
-			Optional<Project> optProject = projectRepo.findById(task.getProjectId());
+		if (task.getProjId() != null) {
+			Optional<Project> optProject = projectRepo.findById(task.getProjId());
 			if (optProject.isPresent()) {
 				Project project = optProject.get();
 				task.setProject(project);
