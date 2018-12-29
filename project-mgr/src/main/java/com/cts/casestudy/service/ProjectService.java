@@ -44,7 +44,7 @@ public class ProjectService {
 			 Project project = new Project(p.getId(), p.getProject(), 
 					 					   p.getStartDate(), p.getEndDate(), 
 					 					   p.getPriority());
-			 List<Task> noOfTasks = fetchTaskCount(p.getId());
+			 List<Task> noOfTasks = retrieveTasksByProject(p.getId());
 			 project.setCountOfTasks(noOfTasks.size());
 			 project.setCountOfCompletedTasks(valueOf(noOfTasks.stream().filter(isCompleted).count()).intValue());
 							 
@@ -88,7 +88,7 @@ public class ProjectService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Task> fetchTaskCount(int projectId) {
+	private List<Task> retrieveTasksByProject(int projectId) {
 	    Query nativeQuery = entityManager.createNativeQuery("select t.* from task t "
 	    		+ "left outer join project p on t.project_id = p.id "
 	    		+ "where p.id=:id", Task.class)
