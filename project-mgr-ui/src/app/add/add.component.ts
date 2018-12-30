@@ -73,7 +73,7 @@ export class AddComponent implements OnInit {
     );
   }
 
-  private loadParents() {
+  loadParents() {
     this.taskService.getAllTasks().then(value => this.parents = value);
   }
 

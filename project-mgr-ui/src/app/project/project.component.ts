@@ -16,6 +16,7 @@ export class ProjectComponent implements OnInit {
   project: Project;
   projects: Project[];
   filteredProjects: Project[];
+  filterByProject: string;
   users: User[];
   userName: string;
   userId: number;

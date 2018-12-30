@@ -1,12 +1,23 @@
-node {
+pipeline {
+    triggers {
+        pollSCM('H 15 * * *')
+    }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
+    }
+
    stage('Checkout from SCM GIT') {
-     git credentialsId: 'GitHub_PWD', url: 'https://github.com/Sankarthik/FSDTraining'
+    checkout([$class: 'GitSCM', branches: [[name: '*/master']], 
+              doGenerateSubmoduleConfigurations: false, extensions: [], 
+              submoduleCfg: [], 
+              userRemoteConfigs: [[url: 'https://github.com/Sankarthik/FSDCertification.git']]])
      echo 'Git checkout succeeded'
    }
    
    stage('Build Docker Image') {
       // Build image from Docker File path
-      sh 'docker build -f "./task-ui/Dockerfile" -t sankarthik30/task-mgr-ui-3.0 ./task-ui/
+      sh 'docker build -f "./project-mgr-ui/Dockerfile" -t sankarthik30/project-mgr-ui:"$BUILD_NUMBER" ./project-mgr-ui/'
    }
    
    stage('Pushing Image into Docker Hub') {
@@ -14,14 +25,14 @@ node {
 	    	sh "docker login -u sankarthik30 -p ${DockerPwd}"
 		}
 		
-   		sh 'docker push sankarthik30/task-mgr-ui-3.0'
+   		sh 'docker push sankarthik30/project-mgr-ui:"$BUILD_NUMBER" '
    }
    
    stage('Run Docker container') {
    	
    	  //Remove existing containers
-      sh 'docker ps --format "{{.ID}}" --filter name=task-mgr-ui-1.0 | sort -u | xargs docker rm -f'
+      sh 'docker ps --format "{{.ID}}" --filter name=project-mgr-ui | sort -u | xargs docker rm -f'
       
-      sh 'docker run --rm -d -p 8085:80/tcp --name task-mgr-ui-3.0 task-mgr-ui-3.0:latest'
+      sh 'docker run --rm -d -p 8085:80/tcp --name project-mgr-ui project-mgr-ui:"$BUILD_NUMBER" '
    }
 }

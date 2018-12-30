@@ -45,8 +45,8 @@ To build and run the project in Docker
 ----------------------------------------
 Front End Steps
 ----------------
-	 Step 1 -> docker build --rm -f "Dockerfile" -t task-mgr-ui-3.0 .
-	 Step 2 -> docker run --rm -d -p 8085:80/tcp --name task-mgr-ui-3.0 task-mgr-ui-3.0:latest
+	 Step 1 -> docker build --rm -f "Dockerfile" -t project-mgr-ui:1.0 .
+	 Step 2 -> docker run --rm -d -p 8085:80/tcp --name project-mgr-ui project-mgr-ui:1.0
 
 
 My Sql Docker Steps
@@ -59,13 +59,13 @@ My Sql Docker Steps
 Backend Steps
 ---------------
 From the Dockerfile location in docker terminal ->  
-		Step 1->    docker build -f Dockerfile -t task-mgr-springboot-1.0 . 
+		Step 1->    docker build -f Dockerfile -t project-mgr-springboot:1.0 . 
 		
-		Step 2->    docker run -p 8080:8080 task-mgr-springboot-1.0 (Run alone without DB) - Dont change PORT in docker vm's to avoid nightmares.:)
+		Step 2->    docker run -p 8080:8080 project-mgr-springboot (Run alone without DB) - Dont change PORT in docker vm's to avoid nightmares.:)
 		
-		Step 3 ->   docker run -p 8080:8080 --name task-mgr-springboot-1.0 --link mysql-standalone:mysql -d task-mgr-springboot-1.0  (Run with my SQL)
+		Step 3 ->   docker run -p 8080:8080 --name project-mgr-springboot --link mysql-standalone:mysql -d project-mgr-springboot  (Run with my SQL)
 		
-        Step 4 ->   docker logs -f mysql-standalone and docker logs -f task-mgr-springboot-1.0 to verify logs
+        Step 4 ->   docker logs -f mysql-standalone and docker logs -f project-mgr-springboot to verify logs
 		
 		
 Jenkins Steps inside Docker
