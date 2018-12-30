@@ -25,4 +25,8 @@ public class ParentTask {
 		this.id = id;
 		this.task = task;
 	}
+	
+	public ParentTask() {
+		super();
+	}
 }
