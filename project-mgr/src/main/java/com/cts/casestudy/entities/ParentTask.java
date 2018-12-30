@@ -12,24 +12,12 @@ public class ParentTask {
 	@Size(max = 100)
 	private String task;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}	
-
 	public Integer getId() {
 		return id;
 	}	
 
 	public String getTask() {
 		return task;
-	}
-
-	public void setTask(String task) {
-		this.task = task;
-	}
-	
-	public ParentTask() {
-		super();
 	}
 	
 	public ParentTask(Integer id, String task) {

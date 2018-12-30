@@ -34,6 +34,8 @@ public class UserServiceTest {
 	private ProjectService projService;
 	@Autowired
 	TaskManagerRepository taskRepo;
+	/*@Mock
+	private UserRepository userRepo;*/
 
 	@Test
 	public void findAllUsers() {
@@ -104,13 +106,4 @@ public class UserServiceTest {
 
 		projService.addProject(project);
 	}
-
-	/*private void addTask() {
-		final Task task = new Task(1, "User Task", 
-	             valueOf(now()), valueOf(now().plusDays(10)), 
-	             5, null);
-
-		task.setUserId(service.findUser(1).getEmployeeId());
-		taskService.addTask(task);
-	}*/
 }

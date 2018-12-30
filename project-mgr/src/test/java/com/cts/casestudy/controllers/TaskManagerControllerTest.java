@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import com.cts.casestudy.entities.ParentTask;
 import com.cts.casestudy.entities.Task;
 import com.cts.casestudy.service.TaskManagerService;
 
@@ -72,6 +73,22 @@ public class TaskManagerControllerTest {
 				.andExpect(MockMvcResultMatchers.status().isOk());
 		
 		verify(service, times(1)).findTask(1);
+        verifyNoMoreInteractions(service);
+	}
+	
+	@Test
+	public void findTaskByProject() throws Exception {
+		Task task = new Task(1, "Test Task", 
+				             valueOf(now()), valueOf(now().plusDays(10)), 
+				             5, new ParentTask(1, "Parent Task"));
+		
+		when(service.findTaskByProject(1)).thenReturn(asList(task));
+		
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/tasks/projects/1")
+				.accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
+				.andExpect(MockMvcResultMatchers.status().isOk());
+		
+		verify(service, times(1)).findTaskByProject(1);
         verifyNoMoreInteractions(service);
 	}
 	

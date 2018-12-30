@@ -50,6 +50,14 @@ public class TaskManagerServiceTest {
     	task.setEndDate(new Date());
     	taskService.updateTask(task);
     }
+    
+    @Test
+    public void completeTask() {
+    	final Task task = taskService.findTask(1);
+    	task.setEndDate(new Date());
+    	task.setStatus("COMPLETED");
+    	taskService.updateTask(task);
+    }
 
     @Test
     public void addTask() {
@@ -69,6 +77,7 @@ public class TaskManagerServiceTest {
     	taskService.endTask(1);
     }
     
+    @Test
     public void findUserByTask() {
 		User user = new User(1, "Sankar", "Giridharan");
 
