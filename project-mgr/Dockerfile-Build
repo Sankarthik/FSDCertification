@@ -2,6 +2,7 @@ FROM maven:3.5.4-jdk-8-slim
 WORKDIR /usr/src/java-code
 COPY . /usr/src/java-code/
 RUN mvn package
+LABEL maintainer="sankarkarthick@gmail.com"
 
 WORKDIR /usr/src/java-app
 RUN cp /usr/src/java-code/target/*.jar ./project-manager-springboot.jar

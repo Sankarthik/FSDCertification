@@ -1,4 +1,12 @@
 pipeline {
+	triggers {
+        pollSCM('H 15 * * *')
+    }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
+    }
+    
    stage('Checkout from SCM GIT') {
      checkout([$class: 'GitSCM', branches: [[name: '*/master']], 
               doGenerateSubmoduleConfigurations: false, extensions: [], 
@@ -9,7 +17,7 @@ pipeline {
    
    stage('Build Docker Image') {
       // Build image from Docker File path
-      sh 'docker build -f "./project-mgr/Dockerfile" -t sankarthik30/project-mgr-boot:"$BUILD_NUMBER" ./project-mgr/'
+      sh 'docker build -f "./project-mgr/Dockerfile-Build" -t sankarthik30/project-mgr-boot:"$BUILD_NUMBER" ./project-mgr/'
    }
    
    stage('Pushing Image into Docker Hub') {
