@@ -1,6 +1,6 @@
-# TaskManager
+# ProjectManager
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.5.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.7.
 
 ## Development server
 
@@ -24,42 +24,71 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 
 -------------------------------------------------------------------------------
 
-## FSD Task Manager Case Study
+--------------------------------------------
+### FSD Project Management Case Study ###
+--------------------------------------------
 
---------------------------------------------------------------------------------
+Application is to manage the Project and Tasks with the below business functionalities.
+To have the new project and task, User needs to be created
 
-Application is to manage the Task with the below business functionalities.
+	-	 User can view all the existing projects/tasks and also filter the tasks in Frontend. (Backend JPA Filter is defined and not implemented on purpose)
 
-User can view all the existing tasks and also filter the tasks in Frontend. (Backend JPA Filter is defined and not implemented on purpose)
+	-   User can add a new project/task with the mandatory fields. Proper validations have been added.
 
-User can add a new task with mandatory fields of Task name and Start date.
+	-   User can edit an existing project/task and also suspend / end the project/task.
 
-User can edit an existing task
-
-User can end the task by clicking the End Task which will set the current date as End
 
 Disable Behaviour
 -----------------
-Task row will be shown with Edit and Delete button in case of start date of the task is future.
-Task row will be shown with Edit and End Task button in case of start date(task) is in active period.
-All conditional buttons of Edit/End Task/Delete will be disabled/uneditable in case task is done/completed with end date set as of current date.
-In case of end date is set with future date, then still Edit and End Task will be available for edit.
+View Task row will be shown with Edit and End button and these buttons will be disabled once the task is set to COMPLETED.
+View Project will be shown with Edit and Suspend button and these buttons will be disabled once the suspend is triggered.
 
-# Docker Build Image and Deploy into Docker HUB
+Technologies Used
+------------------
+project-manager-ui (Frontend) - Frontend application uses Angular 7 and latest dependencies.
+							  -  All screens prototypes used Bootstrap version 4 and npm as dependency management.
+							  
 
-Docker HUB URL:  https://hub.docker.com/r/sankarthik30/task-mgr-ui-final:1.0/
-Git REPO: https://github.com/Sankarthik/FSDTraining
+### Application Execution Instructions: ###
+-------------------------------------------
+Frontend:
+---------
+		- Use 'ng-serve' and the application will be available in 'http://localhost:4200' (with default port)
+		- Use ng build --prod to create a image using Docker for deployment.
 
-Build Steps:
--------------
+GIT Repository
+---------------
+Public: https://github.com/Sankarthik/FSDCertification
 
-1) Manual Build
-	
-	 Step 1 -> docker build --rm -f "Dockerfile" -t task-mgr-ui-3.0 .
-	 Step 2 -> docker run --rm -d -p 8085:80/tcp --name task-mgr-ui-3.0 task-mgr-ui-3.0:latest
-	 
-2) Using Jenkinsfile
-	1) docker pull jenkinssci/blueocean
-	2) Using Jenkins Pipeline script, Build the image and will be pushed to Docker HUB
+Docker HUB Repository
+----------------------
+Frontend: docker pull sankarthik30/project-mgr-ui:<<tagname>>
 
 
+### Docker Build Image and Deploy into Docker HUB ###
+------------------------------------------------------
+To build and run the project in Docker
+----------------------------------------
+Front End Steps
+----------------
+	 Step 1 -> docker build --rm -f "Dockerfile" -t project-mgr-ui:1.0 .
+	 Step 2 -> docker run --rm -d -p 8085:80/tcp --name project-mgr-ui project-mgr-ui:1.0
+		
+		
+Jenkins Steps inside Docker
+---------------------------
+1) Add .gitconfig file to add sslVerify = false in Jenkins_Home dir inside Docker container.
+2) If it doesnot work -> execute "git config --global http.sslverify false" in Jenkins_Home dir
+3) Start docker run -p 8088:8080 jenkinsci/blueocean
+4) Jenkinsfile is being used as pipeline script to build the application and build the docker image and to run the application.
+
+
+To run docker inside Jenkins
+----------------------------
+docker run -u root -p 8088:8080 -v jenkins-data:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock -v "/C/Users/GiridharanS":/home jenkinsci/blueocean
+
+System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "sandbox allow-scripts; default-src 'self'; style-src 'self' 'unsafe-inline';")
+
+login into container
+--------------------
+docker exec -it <mycontainer> bash

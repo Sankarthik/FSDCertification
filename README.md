@@ -1,46 +1,58 @@
-# FSD Project Manager Case Study
+### FSD Project Management Case Study ###
 --------------------------------------------
 
-Application is to manage the Project and Tasks with the below business functionalities...
+Application is to manage the Project and Tasks with the below business functionalities.
+To have the new project and task, User needs to be created
 
-User can view all the existing tasks and also filter the tasks in Frontend. (Backend JPA Filter is defined and not implemented on purpose)
+	-	 User can view all the existing projects/tasks and also filter the tasks in Frontend. (Backend JPA Filter is defined and not implemented on purpose)
 
-User can add a new task with mandatory fields of Task name and Start date..
+	-   User can add a new project/task with the mandatory fields. Proper validations have been added.
 
-User can edit an existing task
+	-   User can edit an existing project/task and also suspend / end the project/task.
 
-User can end the task by clicking the End Task which will set the current date as End
 
 Disable Behaviour
 -----------------
-Task row will be shown with Edit and Delete button in case of start date of the task is future.
-Task row will be shown with Edit and End Task button in case of start date(task) is in active period.
-All conditional buttons of Edit/End Task/Delete will be disabled/uneditable in case task is done/completed with end date set as of current date.
-In case of end date is set with future date, then still Edit and End Task will be available for edit.
-
+View Task row will be shown with Edit and End button and these buttons will be disabled once the task is set to COMPLETED.
+View Project will be shown with Edit and Suspend button and these buttons will be disabled once the suspend is triggered.
 
 Technologies Used
 ------------------
-taskmanager - Spring Boot WAR project uses MySql DB for real time and H2 embedded for testing.
-This also uses Flyway db for db version management and change log.
+project-manager (Backend) - Spring Boot project uses MySql DB for real time and H2 embedded for testing.
+						  - This also uses Flyway db for db version management and change log.
+						  - Rest API, Spring Data JPA, JUnit and ECLEmma JaCaCo plugin along with Maven plugin.
 
-task ui - Frontend application uses Angular 6 and latest dependencies 
+project-manager-ui (Frontend) - Frontend application uses Angular 6 and latest dependencies.
+							  -  All screens prototypes used Bootstrap version 4 and npm as dependency management.
+							  
+
+### Application Execution Instructions: ###
+-------------------------------------------
+Frontend:
+---------
+		- Use 'ng-serve' and the application will be available in 'http://localhost:4200' (with default port)
+		- Use ng build --prod to create a image using Docker for deployment.
+
+Backend:
+--------
+		- Use 'mvn clean install' to add all the dependencies.
+		- Use 'mvn spring-boot:run' to run the backend REST API application which will be available in 'http://localhost:8080' (with default port)
+		- Use 'mvn clean install sonar:sonar' to run the static analysis along with the code coverage reports using JaCaCoPlugin.
+		- Change the "profile = docker" in the application.properties file to build the docker image for deployment.
+
+GIT Repository
+---------------
+Public: https://github.com/Sankarthik/FSDCertification
+
+Docker HUB Repository
+----------------------
+Frontend: docker pull sankarthik30/project-mgr-ui:<<tagname>>
+
+Backend:  docker pull sankarthik30/project-mgr-springboot:<<tagname>>
 
 
-# Docker Build Image and Deploy into Docker HUB
-
-
-Git REPO: https://github.com/Sankarthik/FSDTraining
-Frontend Docker HUB URL:  https://hub.docker.com/r/sankarthik30/task-mgr-ui-final:1.0/
-Backend Docker HUB URL:  https://hub.docker.com/r/sankarthik30/task-mgr-springboot-final/
-
-To run the project:
----------------------
-
-Frontend - use 'ng serve' and the application will be available in 'http://localhost:4200' (with default port)
-
-Backend - run the CtsTaskMgrApplication.java application.
-
+### Docker Build Image and Deploy into Docker HUB ###
+------------------------------------------------------
 To build and run the project in Docker
 ----------------------------------------
 Front End Steps
