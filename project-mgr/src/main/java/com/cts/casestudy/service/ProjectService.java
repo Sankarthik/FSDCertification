@@ -1,7 +1,5 @@
 package com.cts.casestudy.service;
 
-import static java.lang.Long.valueOf;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -46,7 +44,7 @@ public class ProjectService {
 					 					   p.getPriority());
 			 List<Task> noOfTasks = retrieveTasksByProject(p.getId());
 			 project.setCountOfTasks(noOfTasks.size());
-			 project.setCountOfCompletedTasks(valueOf(noOfTasks.stream().filter(isCompleted).count()).intValue());
+			 project.setCountOfCompletedTasks((int)noOfTasks.stream().filter(isCompleted).count());
 							 
 			 projects.add(project);
 		 });
