@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>UnHappyScenarioServicesTest.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (31-dec-2018 18:11:17)</a> &gt; <a href="../../index.html" class="el_group">project-manager</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">com.cts.casestudy.service</a> &gt; <span class="el_source">UnHappyScenarioServicesTest.java</span></div><h1>UnHappyScenarioServicesTest.java</h1><pre class="source lang-java linenums">package com.cts.casestudy.service;
+
+import static java.sql.Date.valueOf;
+import static java.time.LocalDate.now;
+import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.when;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import com.cts.casestudy.entities.ParentTask;
+import com.cts.casestudy.entities.Project;
+import com.cts.casestudy.entities.Task;
+import com.cts.casestudy.entities.User;
+import com.cts.casestudy.repos.ParentTaskManagerRepository;
+import com.cts.casestudy.repos.ProjectRepository;
+import com.cts.casestudy.repos.TaskManagerRepository;
+import com.cts.casestudy.repos.UserRepository;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+<span class="fc" id="L34">public class UnHappyScenarioServicesTest { </span>
+	
+	@Autowired
+    private TaskManagerService taskService;
+	@Autowired
+	private UserService userService;
+	@Autowired
+    private ProjectService projService;
+	
+	@MockBean
+	private TaskManagerRepository taskRepo;
+	@MockBean
+	private ParentTaskManagerRepository parentRepo;
+	@MockBean
+	private ProjectRepository projRepo;
+	@MockBean
+	private UserRepository userRepo;
+	
+	@Test
+    public void findNonExistTask() {
+<span class="fc" id="L54">		when(taskRepo.findById(1)).thenReturn(Optional.empty());</span>
+<span class="fc" id="L55">    	assertNull(taskService.findTask(1));</span>
+<span class="fc" id="L56">    }</span>
+	
+	@Test
+    public void deleteNonExistTask() {
+<span class="fc" id="L60">		when(taskRepo.findById(1)).thenReturn(Optional.empty());</span>
+<span class="fc" id="L61">    	taskService.deleteTask(1);</span>
+<span class="fc" id="L62">    }</span>
+	
+	@Test
+    public void endExistingTask() {
+<span class="fc" id="L66">		final Task task = new Task();</span>
+<span class="fc" id="L67">        task.setTask(&quot;Test Task&quot;);</span>
+<span class="fc" id="L68">        task.setStartDate(new Date());</span>
+<span class="fc" id="L69">		when(taskRepo.findById(1)).thenReturn(Optional.of(task));</span>
+		
+<span class="fc" id="L71">    	taskService.endTask(1);</span>
+<span class="fc" id="L72">    }</span>
+	
+	@Test
+    public void findTaskByProject() {
+<span class="fc" id="L76">		final Task task = new Task();</span>
+<span class="fc" id="L77">        task.setTask(&quot;Test Task&quot;);</span>
+<span class="fc" id="L78">        task.setStartDate(new Date());</span>
+<span class="fc" id="L79">		when(taskRepo.findByProjectId(1)).thenReturn(asList(task));</span>
+<span class="fc" id="L80">    	List&lt;Task&gt; tasks = taskService.findTaskByProject(1);</span>
+<span class="fc" id="L81">    	assertNotNull(tasks);</span>
+<span class="fc" id="L82">    	assertThat(tasks, hasSize(1));</span>
+<span class="fc" id="L83">    }</span>
+	
+	@Test
+    public void addTaskWithParentAndProjectAndUser() {
+<span class="fc" id="L87">		Task task = new Task(1, &quot;Test Task&quot;, </span>
+<span class="fc" id="L88">	             valueOf(now()), valueOf(now().plusDays(10)), </span>
+<span class="fc" id="L89">	             5, new ParentTask(1, &quot;Parent Task&quot;));</span>
+<span class="fc" id="L90">		task.setProjId(3);</span>
+<span class="fc" id="L91">		task.setUserId(3010);</span>
+		
+<span class="fc" id="L93">		Project project = new Project(3, &quot;Project 3&quot;, </span>
+<span class="fc" id="L94">	             valueOf(now()), valueOf(now().plusDays(10)), </span>
+<span class="fc" id="L95">	             5);</span>
+		
+<span class="fc" id="L97">		User user = new User(3010, &quot;Sankar&quot;, &quot;Giridharan&quot;);</span>
+		
+<span class="fc" id="L99">		when(taskRepo.findById(task.getParentTask().getId())).thenReturn(Optional.of(task));</span>
+<span class="fc" id="L100">		when(parentRepo.findById(task.getParentTask().getId())).thenReturn(Optional.empty());</span>
+<span class="fc" id="L101">		when(projRepo.findById(3)).thenReturn(Optional.of(project));</span>
+<span class="fc" id="L102">		when(userRepo.findById(3010)).thenReturn(Optional.of(user));</span>
+		
+<span class="fc" id="L104">		taskService.addTask(task);</span>
+<span class="fc" id="L105">    }</span>
+	
+	@Test(expected = RuntimeException.class)
+    public void addTaskWithParentWhichIsNotPresent() {
+<span class="fc" id="L109">		Task task = new Task(1, &quot;Test Task&quot;, </span>
+<span class="fc" id="L110">	             valueOf(now()), valueOf(now().plusDays(10)), </span>
+<span class="fc" id="L111">	             5, new ParentTask(1, &quot;Parent Task&quot;));</span>
+		
+<span class="fc" id="L113">		when(taskRepo.findById(task.getParentTask().getId())).thenReturn(Optional.empty());</span>
+<span class="nc" id="L114">		taskService.addTask(task);</span>
+<span class="nc" id="L115">    }</span>
+	
+	@Test
+    public void findNonExistUser() {
+<span class="fc" id="L119">		when(userRepo.findById(1)).thenReturn(Optional.empty());</span>
+<span class="fc" id="L120">    	assertNull(userService.findUser(1));</span>
+<span class="fc" id="L121">    }</span>
+	
+	@Test
+    public void deleteNonExistUser() {
+<span class="fc" id="L125">		when(userRepo.findById(1)).thenReturn(Optional.empty());</span>
+<span class="fc" id="L126">		userService.deleteUser(1);</span>
+<span class="fc" id="L127">    }</span>
+	
+	@Test(expected = RuntimeException.class)
+    public void addUserWhichAlreadyExist() {
+<span class="fc" id="L131">		User user = new User(3010, &quot;Sankar&quot;, &quot;Giridharan&quot;);</span>
+
+<span class="fc" id="L133">		when(userRepo.findById(3010)).thenReturn(Optional.of(user));</span>
+<span class="nc" id="L134">		userService.addUser(user);</span>
+<span class="nc" id="L135">    }</span>
+	
+	@Test
+    public void findNonExistProject() {
+<span class="fc" id="L139">		when(projRepo.findById(1)).thenReturn(Optional.empty());</span>
+<span class="fc" id="L140">    	assertNull(projService.findProject(1));</span>
+<span class="fc" id="L141">    }</span>
+	
+	@Test
+    public void endNonExistProject() {
+<span class="fc" id="L145">		when(projRepo.findById(1)).thenReturn(Optional.empty());</span>
+<span class="fc" id="L146">		projService.endProject(1);</span>
+<span class="fc" id="L147">    }</span>
+	
+	@Test
+    public void addProjectwithoutData() {
+<span class="fc" id="L151">    	Project project = null;</span>
+<span class="fc" id="L152">    	projService.addProject(project);</span>
+<span class="fc" id="L153">    }</span>
+    
+	@Test
+    public void addProjectWithNonExistingUser() {
+<span class="fc" id="L157">		Project project = new Project(1, &quot;Project 1&quot;, </span>
+<span class="fc" id="L158">	             valueOf(now()), valueOf(now().plusDays(10)), </span>
+<span class="fc" id="L159">	             5);</span>
+<span class="fc" id="L160">		project.setManagerId(30);</span>
+<span class="fc" id="L161">		when(userRepo.findById(project.getManagerId())).thenReturn(Optional.empty());</span>
+<span class="fc" id="L162">    	projService.addProject(project);</span>
+<span class="fc" id="L163">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>java (31-dec-2018 18:11:17)</div></body></html>

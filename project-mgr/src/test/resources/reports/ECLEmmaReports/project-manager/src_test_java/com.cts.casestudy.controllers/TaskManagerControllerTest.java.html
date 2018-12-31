@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>TaskManagerControllerTest.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (31-dec-2018 18:11:17)</a> &gt; <a href="../../index.html" class="el_group">project-manager</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">com.cts.casestudy.controllers</a> &gt; <span class="el_source">TaskManagerControllerTest.java</span></div><h1>TaskManagerControllerTest.java</h1><pre class="source lang-java linenums">package com.cts.casestudy.controllers;
+
+import static com.cts.casestudy.util.TestUtility.APPLICATION_JSON_UTF8;
+import static com.cts.casestudy.util.TestUtility.convertObjectToJsonBytes;
+import static java.sql.Date.valueOf;
+import static java.time.LocalDate.now;
+import static java.util.Arrays.asList;
+import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import com.cts.casestudy.entities.ParentTask;
+import com.cts.casestudy.entities.Task;
+import com.cts.casestudy.service.TaskManagerService;
+
+@RunWith(SpringRunner.class)
+@AutoConfigureMockMvc
+@WebMvcTest(TaskManagerController.class)
+<span class="fc" id="L35">public class TaskManagerControllerTest {</span>
+	
+	@Autowired
+	private MockMvc mockMvc;
+	
+	@MockBean
+	private TaskManagerService service;
+
+	@Test
+<span class="fc" id="L44">	public void contextLoads() {	}</span>
+	
+	@Test
+	public void findAllTasks() throws Exception {
+<span class="fc" id="L48">		Task task = new Task(1, &quot;Test Task&quot;, </span>
+<span class="fc" id="L49">				             valueOf(now()), valueOf(now().plusDays(10)), </span>
+<span class="fc" id="L50">				             5, null);</span>
+		
+<span class="fc" id="L52">		when(service.findAllTasks()).thenReturn(asList(task));</span>
+		
+<span class="fc" id="L54">		this.mockMvc.perform(MockMvcRequestBuilders.get(&quot;/tasks&quot;)</span>
+<span class="fc" id="L55">				.accept(MediaType.parseMediaType(&quot;application/json;charset=UTF-8&quot;)))</span>
+<span class="fc" id="L56">				.andExpect(MockMvcResultMatchers.status().isOk())</span>
+<span class="fc" id="L57">				.andExpect(MockMvcResultMatchers.jsonPath(&quot;$&quot;, hasSize(1)));</span>
+		
+<span class="fc" id="L59">		verify(service, times(1)).findAllTasks();</span>
+<span class="fc" id="L60">        verifyNoMoreInteractions(service);</span>
+<span class="fc" id="L61">	}</span>
+	
+	@Test
+	public void findTaskById() throws Exception {
+<span class="fc" id="L65">		Task task = new Task(1, &quot;Test Task&quot;, </span>
+<span class="fc" id="L66">				             valueOf(now()), valueOf(now().plusDays(10)), </span>
+<span class="fc" id="L67">				             5, null);</span>
+		
+<span class="fc" id="L69">		when(service.findTask(1)).thenReturn(task);</span>
+		
+<span class="fc" id="L71">		this.mockMvc.perform(MockMvcRequestBuilders.get(&quot;/tasks/1&quot;)</span>
+<span class="fc" id="L72">				.accept(MediaType.parseMediaType(&quot;application/json;charset=UTF-8&quot;)))</span>
+<span class="fc" id="L73">				.andExpect(MockMvcResultMatchers.status().isOk());</span>
+		
+<span class="fc" id="L75">		verify(service, times(1)).findTask(1);</span>
+<span class="fc" id="L76">        verifyNoMoreInteractions(service);</span>
+<span class="fc" id="L77">	}</span>
+	
+	@Test
+	public void findTaskByProject() throws Exception {
+<span class="fc" id="L81">		Task task = new Task(1, &quot;Test Task&quot;, </span>
+<span class="fc" id="L82">				             valueOf(now()), valueOf(now().plusDays(10)), </span>
+<span class="fc" id="L83">				             5, new ParentTask(1, &quot;Parent Task&quot;));</span>
+		
+<span class="fc" id="L85">		when(service.findTaskByProject(1)).thenReturn(asList(task));</span>
+		
+<span class="fc" id="L87">		this.mockMvc.perform(MockMvcRequestBuilders.get(&quot;/tasks/projects/1&quot;)</span>
+<span class="fc" id="L88">				.accept(MediaType.parseMediaType(&quot;application/json;charset=UTF-8&quot;)))</span>
+<span class="fc" id="L89">				.andExpect(MockMvcResultMatchers.status().isOk());</span>
+		
+<span class="fc" id="L91">		verify(service, times(1)).findTaskByProject(1);</span>
+<span class="fc" id="L92">        verifyNoMoreInteractions(service);</span>
+<span class="fc" id="L93">	}</span>
+	
+	@Test
+	public void addTask() throws Exception {
+<span class="fc" id="L97">		Task task = new Task(1, &quot;Test Task&quot;, </span>
+<span class="fc" id="L98">				             valueOf(now()), valueOf(now().plusDays(10)), </span>
+<span class="fc" id="L99">				             5, null);</span>
+<span class="fc" id="L100">		Mockito.doNothing().when(service).addTask(task);</span>
+		
+<span class="fc" id="L102">		this.mockMvc.perform(MockMvcRequestBuilders.post(&quot;/tasks&quot;)</span>
+<span class="fc" id="L103">				.contentType(APPLICATION_JSON_UTF8)</span>
+<span class="fc" id="L104">				.content(convertObjectToJsonBytes(task))</span>
+<span class="fc" id="L105">				.accept(MediaType.parseMediaType(&quot;application/json;charset=UTF-8&quot;)))</span>
+<span class="fc" id="L106">				.andExpect(MockMvcResultMatchers.status().isOk());	</span>
+<span class="fc" id="L107">		ArgumentCaptor&lt;Task&gt; taskCapture = ArgumentCaptor.forClass(Task.class);</span>
+<span class="fc" id="L108">		verify(service, times(1)).addTask(taskCapture.capture());</span>
+<span class="fc" id="L109">        verifyNoMoreInteractions(service);</span>
+<span class="fc" id="L110">	}</span>
+	
+	@Test
+	public void updateTask() throws Exception {
+<span class="fc" id="L114">		Task task = new Task(1, &quot;Test Task&quot;, </span>
+<span class="fc" id="L115">				             valueOf(now()), valueOf(now().plusDays(10)), </span>
+<span class="fc" id="L116">				             5, null);</span>
+<span class="fc" id="L117">		Mockito.doNothing().when(service).updateTask(task);</span>
+		
+<span class="fc" id="L119">		this.mockMvc.perform(MockMvcRequestBuilders.put(&quot;/tasks&quot;)</span>
+<span class="fc" id="L120">				.contentType(APPLICATION_JSON_UTF8)</span>
+<span class="fc" id="L121">				.content(convertObjectToJsonBytes(task))</span>
+<span class="fc" id="L122">				.accept(MediaType.parseMediaType(&quot;application/json;charset=UTF-8&quot;)))</span>
+<span class="fc" id="L123">				.andExpect(MockMvcResultMatchers.status().isOk());	</span>
+<span class="fc" id="L124">		ArgumentCaptor&lt;Task&gt; taskCapture = ArgumentCaptor.forClass(Task.class);</span>
+<span class="fc" id="L125">		verify(service, times(1)).updateTask(taskCapture.capture());</span>
+<span class="fc" id="L126">        verifyNoMoreInteractions(service);</span>
+<span class="fc" id="L127">	}</span>
+	
+	@Test
+	public void deleteTask() throws Exception {
+<span class="fc" id="L131">		Mockito.doNothing().when(service).deleteTask(1);</span>
+		
+<span class="fc" id="L133">		this.mockMvc.perform(MockMvcRequestBuilders.delete(&quot;/tasks/1&quot;)</span>
+<span class="fc" id="L134">				.contentType(APPLICATION_JSON_UTF8)</span>
+<span class="fc" id="L135">				.accept(MediaType.parseMediaType(&quot;application/json;charset=UTF-8&quot;)))</span>
+<span class="fc" id="L136">				.andExpect(MockMvcResultMatchers.status().isOk());	</span>
+<span class="fc" id="L137">		verify(service, times(1)).deleteTask(1);</span>
+<span class="fc" id="L138">        verifyNoMoreInteractions(service);</span>
+<span class="fc" id="L139">	}</span>
+	
+	@Test
+	public void endTask() throws Exception {
+<span class="fc" id="L143">		Mockito.doNothing().when(service).endTask(1);</span>
+		
+<span class="fc" id="L145">		this.mockMvc.perform(MockMvcRequestBuilders.put(&quot;/tasks/1&quot;)</span>
+<span class="fc" id="L146">				.contentType(APPLICATION_JSON_UTF8)</span>
+<span class="fc" id="L147">				.accept(MediaType.parseMediaType(&quot;application/json;charset=UTF-8&quot;)))</span>
+<span class="fc" id="L148">				.andExpect(MockMvcResultMatchers.status().isOk());	</span>
+<span class="fc" id="L149">		verify(service, times(1)).endTask(1);</span>
+<span class="fc" id="L150">        verifyNoMoreInteractions(service);</span>
+<span class="fc" id="L151">	}</span>
+	
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>java (31-dec-2018 18:11:17)</div></body></html>

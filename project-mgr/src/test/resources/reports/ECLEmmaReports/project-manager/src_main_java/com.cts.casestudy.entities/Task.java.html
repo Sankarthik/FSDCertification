@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>Task.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (31-dec-2018 18:11:17)</a> &gt; <a href="../../index.html" class="el_group">project-manager</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.cts.casestudy.entities</a> &gt; <span class="el_source">Task.java</span></div><h1>Task.java</h1><pre class="source lang-java linenums">package com.cts.casestudy.entities;
+
+import java.util.Date;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.OptBoolean;
+
+@Entity
+public class Task {
+
+	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = &quot;native&quot;)
+    @GenericGenerator(name = &quot;native&quot;, strategy = &quot;native&quot;)
+	private Integer id;
+	
+	@NotNull
+	@Size(max = 100)
+	private String task;
+	
+	@NotNull
+	@Temporal(TemporalType.DATE)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, lenient = OptBoolean.FALSE, pattern = &quot;yyyy-MM-dd&quot;, timezone = &quot;CET&quot;)
+	private Date startDate;
+	
+	@Temporal(TemporalType.DATE)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, lenient = OptBoolean.FALSE, pattern = &quot;yyyy-MM-dd&quot;, timezone = &quot;CET&quot;)
+	private Date endDate;
+	
+	@Min(0) @Max(30)
+	private Integer priority;
+	
+	@ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = &quot;PARENT_TASK_ID&quot;)
+	private ParentTask parentTask;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = &quot;PROJECT_ID&quot;)
+	private Project project;
+	
+	private String status;
+	
+	@Transient
+	private Integer userId;
+	
+	@Transient
+	private Integer projId;
+	
+
+	public Date getStartDate() {
+<span class="fc" id="L68">		return startDate;</span>
+	}
+
+	public void setStartDate(Date startDate) {
+<span class="fc" id="L72">		this.startDate = startDate;</span>
+<span class="fc" id="L73">	}</span>
+
+	public Date getEndDate() {
+<span class="fc" id="L76">		return endDate;</span>
+	}
+
+	public void setEndDate(Date endDate) {
+<span class="fc" id="L80">		this.endDate = endDate;</span>
+<span class="fc" id="L81">	}</span>
+
+	public Integer getPriority() {
+<span class="fc" id="L84">		return priority;</span>
+	}
+
+	public void setPriority(Integer priority) {
+<span class="fc" id="L88">		this.priority = priority;</span>
+<span class="fc" id="L89">	}</span>
+	
+	public ParentTask getParentTask() {
+<span class="fc" id="L92">		return parentTask;</span>
+	}
+
+	public void setParentTask(ParentTask parentTask) {
+<span class="fc" id="L96">		this.parentTask = parentTask;</span>
+<span class="fc" id="L97">	}</span>
+
+	public String getTask() {
+<span class="fc" id="L100">		return task;</span>
+	}
+
+	public void setTask(String task) {
+<span class="fc" id="L104">		this.task = task;</span>
+<span class="fc" id="L105">	}</span>
+
+	public Integer getId() {
+<span class="fc" id="L108">		return id;</span>
+	}	
+
+	public Integer getUserId() {
+<span class="fc" id="L112">		return userId;</span>
+	}
+
+	public void setUserId(Integer userId) {
+<span class="fc" id="L116">		this.userId = userId;</span>
+<span class="fc" id="L117">	}</span>
+
+	public Project getProject() {
+<span class="fc" id="L120">		return project;</span>
+	}
+
+	public void setProject(Project project) {
+<span class="fc" id="L124">		this.project = project;</span>
+<span class="fc" id="L125">	}</span>
+
+	public Integer getProjId() {
+<span class="fc" id="L128">		return projId;</span>
+	}
+
+	public void setProjId(Integer projectId) {
+<span class="fc" id="L132">		this.projId = projectId;</span>
+<span class="fc" id="L133">	}</span>
+
+	public String getStatus() {
+<span class="fc" id="L136">		return status;</span>
+	}
+
+	public void setStatus(String status) {
+<span class="fc" id="L140">		this.status = status;</span>
+<span class="fc" id="L141">	}</span>
+
+	public Task(Integer id, @NotNull String task, Date startDate, Date endDate, Integer priority,
+			ParentTask parentTask) {
+<span class="fc" id="L145">		super();</span>
+<span class="fc" id="L146">		this.id = id;</span>
+<span class="fc" id="L147">		this.task = task;</span>
+<span class="fc" id="L148">		this.startDate = startDate;</span>
+<span class="fc" id="L149">		this.endDate = endDate;</span>
+<span class="fc" id="L150">		this.priority = priority;</span>
+<span class="fc" id="L151">		this.parentTask = parentTask;</span>
+<span class="fc" id="L152">	}</span>
+	
+	public Task() {
+<span class="fc" id="L155">		super();</span>
+<span class="fc" id="L156">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>java (31-dec-2018 18:11:17)</div></body></html>

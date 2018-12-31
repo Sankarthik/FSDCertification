@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>UserController.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (31-dec-2018 18:11:17)</a> &gt; <a href="../../index.html" class="el_group">project-manager</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.cts.casestudy.controllers</a> &gt; <span class="el_source">UserController.java</span></div><h1>UserController.java</h1><pre class="source lang-java linenums">package com.cts.casestudy.controllers;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.cts.casestudy.entities.User;
+import com.cts.casestudy.service.UserService;
+
+@CrossOrigin
+@RestController
+<span class="fc" id="L18">public class UserController {</span>
+	
+	@Autowired
+	UserService service;
+	
+	@RequestMapping(path=&quot;/users&quot;, method=RequestMethod.GET)
+	public List&lt;User&gt; findAllUsers(){
+<span class="fc" id="L25">		return service.findAllUsers();</span>
+	}
+	
+	@RequestMapping(path=&quot;/users/{id}&quot;, method=RequestMethod.GET)
+	public User findUser(@PathVariable Integer id){
+<span class="fc" id="L30">		return service.findUser(id);</span>
+	}
+	
+	@RequestMapping(path=&quot;/users/projects/{id}&quot;, method=RequestMethod.GET)
+	public User findUserByProjectId(@PathVariable Integer id){
+<span class="fc" id="L35">		return service.findUserByProject(id);</span>
+	}
+	
+	@RequestMapping(path=&quot;/users/tasks/{id}&quot;, method=RequestMethod.GET)
+	public User findUserByTaskId(@PathVariable Integer id){
+<span class="fc" id="L40">		return service.findUserByTask(id);</span>
+	}
+	
+	@RequestMapping(path=&quot;/users&quot;, method=RequestMethod.POST)
+	public void addUser(@RequestBody User user) {
+<span class="fc" id="L45">		 service.addUser(user);</span>
+<span class="fc" id="L46">	}</span>
+	
+	@RequestMapping(path=&quot;/users&quot;, method=RequestMethod.PUT)
+	public void updateUser(@RequestBody User user){
+<span class="fc" id="L50">		 service.updateUser(user);</span>
+<span class="fc" id="L51">	}</span>
+	
+	@RequestMapping(path=&quot;/users/{id}&quot;, method=RequestMethod.DELETE)
+	public void deleteUser(@PathVariable Integer id){
+<span class="fc" id="L55">		 service.deleteUser(id);</span>
+<span class="fc" id="L56">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>java (31-dec-2018 18:11:17)</div></body></html>

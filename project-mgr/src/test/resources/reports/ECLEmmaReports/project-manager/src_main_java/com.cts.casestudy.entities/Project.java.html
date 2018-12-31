@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>Project.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (31-dec-2018 18:11:17)</a> &gt; <a href="../../index.html" class="el_group">project-manager</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.cts.casestudy.entities</a> &gt; <span class="el_source">Project.java</span></div><h1>Project.java</h1><pre class="source lang-java linenums">package com.cts.casestudy.entities;
+
+import java.util.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.OptBoolean;
+
+@Entity
+public class Project {
+
+	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = &quot;native&quot;)
+    @GenericGenerator(name = &quot;native&quot;, strategy = &quot;native&quot;)
+	private Integer id;
+	
+	@NotNull
+	@Size(max = 100)
+	private String project;
+	
+	@Temporal(TemporalType.DATE)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, lenient = OptBoolean.FALSE, pattern = &quot;yyyy-MM-dd&quot;, timezone = &quot;CET&quot;)
+	private Date startDate;
+	
+	@Temporal(TemporalType.DATE)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, lenient = OptBoolean.FALSE, pattern = &quot;yyyy-MM-dd&quot;, timezone = &quot;CET&quot;)
+	private Date endDate;
+	
+	@Min(0) @Max(30)
+	private Integer priority;	
+	
+	@Transient
+	private Integer managerId;
+	
+	@Transient
+	private Integer countOfTasks;
+	
+	@Transient
+	private Integer countOfCompletedTasks;
+
+	public Date getStartDate() {
+<span class="fc" id="L55">		return startDate;</span>
+	}
+
+	public void setStartDate(Date startDate) {
+<span class="fc" id="L59">		this.startDate = startDate;</span>
+<span class="fc" id="L60">	}</span>
+
+	public Date getEndDate() {
+<span class="fc" id="L63">		return endDate;</span>
+	}
+
+	public void setEndDate(Date endDate) {
+<span class="fc" id="L67">		this.endDate = endDate;</span>
+<span class="fc" id="L68">	}</span>
+
+	public Integer getPriority() {
+<span class="fc" id="L71">		return priority;</span>
+	}
+
+	public void setPriority(Integer priority) {
+<span class="fc" id="L75">		this.priority = priority;</span>
+<span class="fc" id="L76">	}</span>
+
+	public Integer getId() {
+<span class="fc" id="L79">		return id;</span>
+	}
+
+	public String getProject() {
+<span class="fc" id="L83">		return project;</span>
+	}
+
+	public void setProject(String project) {
+<span class="fc" id="L87">		this.project = project;</span>
+<span class="fc" id="L88">	}</span>
+	
+	public Integer getManagerId() {
+<span class="fc" id="L91">		return managerId;</span>
+	}
+
+	public void setManagerId(Integer managerId) {
+<span class="fc" id="L95">		this.managerId = managerId;</span>
+<span class="fc" id="L96">	}</span>
+	
+	public Integer getCountOfTasks() {
+<span class="fc" id="L99">		return countOfTasks;</span>
+	}
+
+	public void setCountOfTasks(Integer countOfTasks) {
+<span class="fc" id="L103">		this.countOfTasks = countOfTasks;</span>
+<span class="fc" id="L104">	}</span>
+
+	public Integer getCountOfCompletedTasks() {
+<span class="fc" id="L107">		return countOfCompletedTasks;</span>
+	}
+
+	public void setCountOfCompletedTasks(Integer countOfCompletedTasks) {
+<span class="fc" id="L111">		this.countOfCompletedTasks = countOfCompletedTasks;</span>
+<span class="fc" id="L112">	}</span>
+
+	public Project(Integer id, @NotNull String project, Date startDate, Date endDate, Integer priority) {
+<span class="fc" id="L115">		super();</span>
+<span class="fc" id="L116">		this.id = id;</span>
+<span class="fc" id="L117">		this.project = project;</span>
+<span class="fc" id="L118">		this.startDate = startDate;</span>
+<span class="fc" id="L119">		this.endDate = endDate;</span>
+<span class="fc" id="L120">		this.priority = priority;</span>
+<span class="fc" id="L121">	}</span>
+	
+	public Project() {
+<span class="fc" id="L124">		super();</span>
+<span class="fc" id="L125">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>java (31-dec-2018 18:11:17)</div></body></html>

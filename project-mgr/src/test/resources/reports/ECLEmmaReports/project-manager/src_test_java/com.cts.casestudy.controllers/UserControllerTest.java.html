@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>UserControllerTest.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (31-dec-2018 18:11:17)</a> &gt; <a href="../../index.html" class="el_group">project-manager</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">com.cts.casestudy.controllers</a> &gt; <span class="el_source">UserControllerTest.java</span></div><h1>UserControllerTest.java</h1><pre class="source lang-java linenums">package com.cts.casestudy.controllers;
+
+import static com.cts.casestudy.util.TestUtility.APPLICATION_JSON_UTF8;
+import static com.cts.casestudy.util.TestUtility.convertObjectToJsonBytes;
+import static java.util.Arrays.asList;
+import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import com.cts.casestudy.entities.User;
+import com.cts.casestudy.service.UserService;
+
+@RunWith(SpringRunner.class)
+@AutoConfigureMockMvc
+@WebMvcTest(UserController.class)
+<span class="fc" id="L32">public class UserControllerTest {</span>
+	
+	@Autowired
+	private MockMvc mockMvc;
+	
+	@MockBean
+	private UserService service;
+
+	@Test
+<span class="fc" id="L41">	public void contextLoads() {	}</span>
+	
+	@Test
+	public void findAllUsers() throws Exception {
+<span class="fc" id="L45">		User user = new User(1, &quot;Sankar&quot;, &quot;Giridharan&quot;);</span>
+		
+<span class="fc" id="L47">		when(service.findAllUsers()).thenReturn(asList(user));</span>
+		
+<span class="fc" id="L49">		this.mockMvc.perform(MockMvcRequestBuilders.get(&quot;/users&quot;)</span>
+<span class="fc" id="L50">				.accept(MediaType.parseMediaType(&quot;application/json;charset=UTF-8&quot;)))</span>
+<span class="fc" id="L51">				.andExpect(MockMvcResultMatchers.status().isOk())</span>
+<span class="fc" id="L52">				.andExpect(MockMvcResultMatchers.jsonPath(&quot;$&quot;, hasSize(1)));</span>
+		
+<span class="fc" id="L54">		verify(service, times(1)).findAllUsers();</span>
+<span class="fc" id="L55">        verifyNoMoreInteractions(service);</span>
+<span class="fc" id="L56">	}</span>
+	
+	@Test
+	public void findUser() throws Exception {
+<span class="fc" id="L60">		User user = new User(1, &quot;Sankar&quot;, &quot;Giridharan&quot;);</span>
+		
+<span class="fc" id="L62">		when(service.findUser(1)).thenReturn(user);</span>
+		
+<span class="fc" id="L64">		this.mockMvc.perform(MockMvcRequestBuilders.get(&quot;/users/1&quot;)</span>
+<span class="fc" id="L65">				.accept(MediaType.parseMediaType(&quot;application/json;charset=UTF-8&quot;)))</span>
+<span class="fc" id="L66">				.andExpect(MockMvcResultMatchers.status().isOk());</span>
+		
+<span class="fc" id="L68">		verify(service, times(1)).findUser(1);</span>
+<span class="fc" id="L69">        verifyNoMoreInteractions(service);</span>
+<span class="fc" id="L70">	}</span>
+	
+	@Test
+	public void findUserByProjectId() throws Exception {
+<span class="fc" id="L74">		User user = new User(1, &quot;Sankar&quot;, &quot;Giridharan&quot;);</span>
+		
+<span class="fc" id="L76">		when(service.findUserByProject(1)).thenReturn(user);</span>
+		
+<span class="fc" id="L78">		this.mockMvc.perform(MockMvcRequestBuilders.get(&quot;/users/projects/1&quot;)</span>
+<span class="fc" id="L79">				.accept(MediaType.parseMediaType(&quot;application/json;charset=UTF-8&quot;)))</span>
+<span class="fc" id="L80">				.andExpect(MockMvcResultMatchers.status().isOk());</span>
+		
+<span class="fc" id="L82">		verify(service, times(1)).findUserByProject(1);</span>
+<span class="fc" id="L83">        verifyNoMoreInteractions(service);</span>
+<span class="fc" id="L84">	}</span>
+	
+	@Test
+	public void findUserByTaskId() throws Exception {
+<span class="fc" id="L88">		User user = new User(1, &quot;Sankar&quot;, &quot;Giridharan&quot;);</span>
+		
+<span class="fc" id="L90">		when(service.findUserByTask(1)).thenReturn(user);</span>
+		
+<span class="fc" id="L92">		this.mockMvc.perform(MockMvcRequestBuilders.get(&quot;/users/tasks/1&quot;)</span>
+<span class="fc" id="L93">				.accept(MediaType.parseMediaType(&quot;application/json;charset=UTF-8&quot;)))</span>
+<span class="fc" id="L94">				.andExpect(MockMvcResultMatchers.status().isOk());</span>
+		
+<span class="fc" id="L96">		verify(service, times(1)).findUserByTask(1);</span>
+<span class="fc" id="L97">        verifyNoMoreInteractions(service);</span>
+<span class="fc" id="L98">	}</span>
+	
+	@Test
+	public void addUser() throws Exception {
+<span class="fc" id="L102">		User user = new User(1, &quot;Sankar&quot;, &quot;Giridharan&quot;);</span>
+
+<span class="fc" id="L104">		Mockito.doNothing().when(service).addUser(user);</span>
+		
+<span class="fc" id="L106">		this.mockMvc.perform(MockMvcRequestBuilders.post(&quot;/users&quot;)</span>
+<span class="fc" id="L107">				.contentType(APPLICATION_JSON_UTF8)</span>
+<span class="fc" id="L108">				.content(convertObjectToJsonBytes(user))</span>
+<span class="fc" id="L109">				.accept(MediaType.parseMediaType(&quot;application/json;charset=UTF-8&quot;)))</span>
+<span class="fc" id="L110">				.andExpect(MockMvcResultMatchers.status().isOk());	</span>
+<span class="fc" id="L111">		ArgumentCaptor&lt;User&gt; userCapture = ArgumentCaptor.forClass(User.class);</span>
+<span class="fc" id="L112">		verify(service, times(1)).addUser(userCapture.capture());</span>
+<span class="fc" id="L113">        verifyNoMoreInteractions(service);</span>
+<span class="fc" id="L114">	}</span>
+	
+	@Test
+	public void updateUser() throws Exception {
+<span class="fc" id="L118">		User user = new User(1, &quot;Sankar&quot;, &quot;Giridharan&quot;);</span>
+
+<span class="fc" id="L120">		Mockito.doNothing().when(service).updateUser(user);</span>
+		
+<span class="fc" id="L122">		this.mockMvc.perform(MockMvcRequestBuilders.put(&quot;/users&quot;)</span>
+<span class="fc" id="L123">				.contentType(APPLICATION_JSON_UTF8)</span>
+<span class="fc" id="L124">				.content(convertObjectToJsonBytes(user))</span>
+<span class="fc" id="L125">				.accept(MediaType.parseMediaType(&quot;application/json;charset=UTF-8&quot;)))</span>
+<span class="fc" id="L126">				.andExpect(MockMvcResultMatchers.status().isOk());	</span>
+<span class="fc" id="L127">		ArgumentCaptor&lt;User&gt; userCapture = ArgumentCaptor.forClass(User.class);</span>
+<span class="fc" id="L128">		verify(service, times(1)).updateUser(userCapture.capture());</span>
+<span class="fc" id="L129">        verifyNoMoreInteractions(service);</span>
+<span class="fc" id="L130">	}</span>
+	
+	@Test
+	public void deleteUser() throws Exception {
+<span class="fc" id="L134">		Mockito.doNothing().when(service).deleteUser(1);</span>
+		
+<span class="fc" id="L136">		this.mockMvc.perform(MockMvcRequestBuilders.delete(&quot;/users/1&quot;)</span>
+<span class="fc" id="L137">				.contentType(APPLICATION_JSON_UTF8)</span>
+<span class="fc" id="L138">				.accept(MediaType.parseMediaType(&quot;application/json;charset=UTF-8&quot;)))</span>
+<span class="fc" id="L139">				.andExpect(MockMvcResultMatchers.status().isOk());	</span>
+<span class="fc" id="L140">		verify(service, times(1)).deleteUser(1);</span>
+<span class="fc" id="L141">        verifyNoMoreInteractions(service);</span>
+<span class="fc" id="L142">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>java (31-dec-2018 18:11:17)</div></body></html>

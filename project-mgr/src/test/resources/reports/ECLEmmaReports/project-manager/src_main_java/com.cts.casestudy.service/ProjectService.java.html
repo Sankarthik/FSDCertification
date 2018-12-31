@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>ProjectService.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (31-dec-2018 18:11:17)</a> &gt; <a href="../../index.html" class="el_group">project-manager</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.cts.casestudy.service</a> &gt; <span class="el_source">ProjectService.java</span></div><h1>ProjectService.java</h1><pre class="source lang-java linenums">package com.cts.casestudy.service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.cts.casestudy.entities.Project;
+import com.cts.casestudy.entities.Task;
+import com.cts.casestudy.entities.User;
+import com.cts.casestudy.repos.ProjectRepository;
+import com.cts.casestudy.repos.UserRepository;
+
+@Service
+<span class="fc" id="L23">public class ProjectService {</span>
+	
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	@Autowired
+	ProjectRepository projectRepo;
+	
+	@Autowired
+	UserRepository userRepo;
+
+	public List&lt;Project&gt; findAllProjects() {
+<span class="fc" id="L35">		return projectRepo.findAll();</span>
+	}
+	
+	public List&lt;Project&gt; findAllProjectsWithTask() {
+<span class="fc" id="L39">		 List&lt;Project&gt; projects = new ArrayList&lt;&gt;();</span>
+<span class="pc bnc" id="L40" title="All 4 branches missed.">		 Predicate&lt;Task&gt; isCompleted = ct -&gt; ct.getEndDate() != null &amp;&amp; ct.getEndDate().before(new Date());</span>
+<span class="fc" id="L41">		 projectRepo.findAll().stream().forEach(p -&gt; {</span>
+<span class="fc" id="L42">			 Project project = new Project(p.getId(), p.getProject(), </span>
+<span class="fc" id="L43">					 					   p.getStartDate(), p.getEndDate(), </span>
+<span class="fc" id="L44">					 					   p.getPriority());</span>
+<span class="fc" id="L45">			 List&lt;Task&gt; noOfTasks = retrieveTasksByProject(p.getId());</span>
+<span class="fc" id="L46">			 project.setCountOfTasks(noOfTasks.size());</span>
+<span class="fc" id="L47">			 project.setCountOfCompletedTasks((int)noOfTasks.stream().filter(isCompleted).count());</span>
+							 
+<span class="fc" id="L49">			 projects.add(project);</span>
+<span class="fc" id="L50">		 });</span>
+		 
+<span class="fc" id="L52">		 return projects;</span>
+	}
+
+	public Project findProject(Integer projectId) {
+<span class="fc" id="L56">		Optional&lt;Project&gt; project = projectRepo.findById(projectId);</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">		return project.isPresent() ? project.get() : null;</span>
+	}
+
+	public void addProject(Project project) {
+<span class="fc bfc" id="L61" title="All 2 branches covered.">		if (project != null) {</span>
+<span class="fc" id="L62">			projectRepo.save(project);</span>
+			
+<span class="fc bfc" id="L64" title="All 2 branches covered.">			if(project.getManagerId() != null) {</span>
+<span class="fc" id="L65">				Optional&lt;User&gt; optUser = userRepo.findById(project.getManagerId());</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">				if(optUser.isPresent()) {</span>
+<span class="fc" id="L67">					User user = optUser.get();</span>
+<span class="fc" id="L68">					user.setProject(project);</span>
+<span class="fc" id="L69">					userRepo.save(user);</span>
+				}
+			}			
+		}
+<span class="fc" id="L73">	}</span>
+
+	public void updateProject(Project project) {
+<span class="fc" id="L76">		addProject(project);</span>
+<span class="fc" id="L77">	}</span>
+
+	public void endProject(Integer id) {
+<span class="fc" id="L80">		Optional&lt;Project&gt; optProject = projectRepo.findById(id);</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">		if (optProject.isPresent()) {</span>
+<span class="fc" id="L82">			Project project = optProject.get();</span>
+<span class="fc" id="L83">			project.setEndDate(new Date());</span>
+<span class="fc" id="L84">			projectRepo.save(project);</span>
+		}
+<span class="fc" id="L86">	}</span>
+
+	@SuppressWarnings(&quot;unchecked&quot;)
+	private List&lt;Task&gt; retrieveTasksByProject(int projectId) {
+<span class="fc" id="L90">	    Query nativeQuery = entityManager.createNativeQuery(&quot;select t.* from task t &quot;</span>
+	    		+ &quot;left outer join project p on t.project_id = p.id &quot;
+	    		+ &quot;where p.id=:id&quot;, Task.class)
+<span class="fc" id="L93">	    		.setParameter(&quot;id&quot;, projectId);</span>
+	    
+<span class="fc" id="L95">	    return (List&lt;Task&gt;) nativeQuery.getResultList();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>java (31-dec-2018 18:11:17)</div></body></html>
